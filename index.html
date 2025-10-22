@@ -3,834 +3,929 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ماشین حساب قیمت‌گذاری دوره آموزشی</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>ماشین حساب قیمت‌گذاری دوره | طرح جدید</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Vazirmatn & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <!-- KaTeX for LaTeX rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU07EWHEZrWT2UPkA9xGETK4M0s4xg//ueGgBIeLPNKqDA/a+sspDOX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
     <style>
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: #f8f9fa; /* Warm light gray */
+            background-color: #f8fafc; /* slate-50 */
         }
-        .card {
-            border: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        .font-vazir-black {
+             font-weight: 900;
+        }
+        /* Form elements */
+        .form-select, .form-input {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0; /* slate-200 */
+            transition: all 0.2s ease-in-out;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+        }
+        .form-select:focus, .form-input:focus {
+            --tw-ring-color: #f59e0b; /* amber-500 */
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 2px var(--tw-ring-color);
+            outline: none;
         }
         .form-range::-webkit-slider-thumb {
-            background-color: #FF9800; /* Warm Orange */
+            background-color: #f59e0b; /* amber-500 */
         }
         .form-range::-moz-range-thumb {
-            background-color: #FF9800;
+            background-color: #f59e0b;
         }
         .form-check-input:checked {
-            background-color: #FF9800;
-            border-color: #FF9800;
+            background-color: #f59e0b;
+            border-color: #f59e0b;
         }
-        .final-price-card {
-            background-image: linear-gradient(to top right, #FF9800, #FFC107);
+        
+        /* Tab styles from image */
+        .tab-btn {
+            color: #475569; /* slate-600 */
         }
-        .output-value {
-            color: #E65100; /* Deep Orange */
+        .tab-btn.active {
+            background-color: white;
+            color: #f59e0b; /* amber-500 */
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
-        .nav-tabs .nav-link {
-            color: #6c757d;
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        
+        /* Prose styles for academic content with warm tones */
+        .prose h1, .prose h2 { color: #1e293b; border-color: #e2e8f0; } /* slate-800, slate-200 */
+        .prose h3 { color: #334155; } /* slate-700 */
+        .prose h4 { color: #f59e0b; border-color: #e2e8f0; } /* amber-500 */
+        .prose strong { color: #b45309; } /* amber-700 */
+        .prose code { background-color: #f1f5f9; color: #475569; padding: 0.2rem 0.4rem; border-radius: 0.25rem;}
+        .prose { line-height: 1.8; max-width: 100%;}
+        .prose p, .prose ul, .prose h5 { margin-bottom: 1.5rem; line-height: 1.9; }
+        .prose ul li { margin-bottom: 0.75rem; padding-right: 0.5rem; }
+        .prose h1, .prose h2 { margin-bottom: 2rem; padding-bottom: 1rem; }
+        .prose h3 { margin-top: 3rem; margin-bottom: 1.5rem; }
+        .prose h4 { margin-top: 2.5rem; margin-bottom: 1rem; }
+        .prose hr { margin-top: 3rem; margin-bottom: 3rem; }
+        .prose .content-block img {
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            max-width: 100%; /* Ensure images don't overflow */
+            height: auto; /* Maintain aspect ratio */
+            margin-left: auto; /* Center images */
+            margin-right: auto;
         }
-        .nav-tabs .nav-link.active {
-            color: #E65100;
-            border-color: #FF9800 #FF9800 #fff;
-        }
-        .methodology-section h4 {
-            color: #FF9800;
-        }
-        .methodology-section h5 {
-            font-weight: 600;
-            color: #343a40;
-        }
+
     </style>
 </head>
-<body class="p-3 p-md-5">
+<body class="antialiased">
 
-    <div class="container-fluid" style="max-width: 1400px;">
-        <header class="text-center mb-5">
-            <h1 class="display-5 fw-bold text-dark mb-2">🎯 ماشین حساب قیمت‌گذاری دوره</h1>
-            <p class="lead text-secondary">بر اساس مدل هیبریدی Value-Based + Economic Adjustment</p>
+    <div class="container mx-auto max-w-7xl px-4 py-8 sm:py-12">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <div class="flex items-center justify-center gap-x-4">
+                 <svg class="h-12 w-12 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 21.75h4.5a3.75 3.75 0 0 0 3.75-3.75V6.75A3.75 3.75 0 0 0 14.25 3h-4.5A3.75 3.75 0 0 0 6 6.75v11.25A3.75 3.75 0 0 0 9.75 21.75Z" />
+                </svg>
+                <h1 class="text-4xl md:text-5xl font-vazir-black text-slate-800">ماشین حساب قیمت‌گذاری دوره</h1>
+            </div>
+            <p class="mt-2 text-lg text-slate-500">بر اساس مدل هیبریدی Value-Based + Economic Adjustment</p>
         </header>
 
         <!-- Tabs Navigation -->
-        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator-tab-pane" type="button" role="tab" aria-controls="calculator-tab-pane" aria-selected="true">ماشین حساب</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="methodology-tab" data-bs-toggle="tab" data-bs-target="#methodology-tab-pane" type="button" role="tab" aria-controls="methodology-tab-pane" aria-selected="false">راهنمای علمی و شفاف‌سازی فرمول</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="academic-tab" data-bs-toggle="tab" data-bs-target="#academic-tab-pane" type="button" role="tab" aria-controls="academic-tab-pane" aria-selected="false">تحلیل آکادمیک ماشین حساب</button>
-            </li>
-        </ul>
-
+        <div class="flex justify-center mb-6">
+            <nav class="flex items-center p-1.5 bg-slate-100 rounded-xl" id="tab-buttons">
+                <button data-tab="calculator" class="tab-btn active font-semibold whitespace-nowrap py-2 px-6 text-sm sm:text-base transition-all duration-300">
+                    ماشین حساب
+                </button>
+                <button data-tab="methodology" class="tab-btn font-semibold whitespace-nowrap py-2 px-6 text-sm sm:text-base transition-all duration-300 mx-1">
+                    راهنمای علمی و شفاف‌سازی فرمول
+                </button>
+                <button data-tab="academic" class="tab-btn font-semibold whitespace-nowrap py-2 px-6 text-sm sm:text-base transition-all duration-300">
+                    تحلیل آکادمیک ماشین حساب
+                </button>
+            </nav>
+        </div>
+        
         <!-- Tabs Content -->
-        <div class="tab-content" id="myTabContent">
+        <div id="tab-content">
             <!-- Calculator Tab Pane -->
-            <div class="tab-pane fade show active" id="calculator-tab-pane" role="tabpanel" aria-labelledby="calculator-tab" tabindex="0">
-                <div class="row g-4">
-                    <!-- Input Section -->
-                    <div class="col-lg-7">
-                        <div class="card p-4 h-100">
-                            <div class="card-body">
-                                <!-- CV Section -->
-                                <h3 class="fw-semibold text-dark mb-4 border-bottom pb-3">۱. مشخصات و ارزش محتوا (CV)</h3>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="depth" class="form-label">عمق و سطح دوره</label>
-                                        <select id="depth" class="form-select">
-                                            <option value="5">مقدماتی</option>
-                                            <option value="7" selected>متوسط</option>
-                                            <option value="10">پیشرفته</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="contentType" class="form-label">نوع محتوا (مسکن/ویتامین)</label>
-                                        <select id="contentType" class="form-select">
-                                            <option value="1">ویتامین (x1.0)</option>
-                                            <option value="1.25" selected>مسکن (x1.25)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="duration" class="form-label">مدت زمان دوره (ساعت)</label>
-                                        <input type="number" id="duration" class="form-control" value="20" min="1">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="uniqueness" class="form-label">منحصربه‌فرد بودن محتوا</label>
-                                        <select id="uniqueness" class="form-select">
-                                            <option value="4">عمومی</option>
-                                            <option value="8" selected>تخصصی</option>
-                                            <option value="10">نایاب</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="valueCoefficient" class="form-label">نرخ پایه ساعتی (تومان)</label>
-                                        <input type="number" id="valueCoefficient" class="form-control" value="2500" min="0" step="100">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="productionQuality" class="form-label">کیفیت تولید (<span id="productionQualityValue">8</span>/10)</label>
-                                        <input type="range" id="productionQuality" class="form-range" value="8" min="1" max="10" step="1">
-                                    </div>
-                                </div>
-
-                                <!-- Mentoring & Audience Section -->
-                                <h3 class="fw-semibold text-dark mb-4 border-bottom pb-3 mt-5">۲. منتورینگ و جامعه هدف</h3>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="mentoring" class="form-label">سطح منتورینگ</label>
-                                        <select id="mentoring" class="form-select">
-                                            <option value="1">بدون منتور</option>
-                                            <option value="1.5" selected>گروهی</option>
-                                            <option value="2.2">گروهی + تضمین موفقیت</option>
-                                            <option value="2.5">شخصی (1:1)</option>
-                                            <option value="3.5">شخصی + ضمانت شغلی</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">جامعه هدف (انتخاب چندگانه)</label>
-                                        <div class="form-check">
-                                            <input id="audience1" type="checkbox" value="10000000" class="target-audience form-check-input">
-                                            <label for="audience1" class="form-check-label">دانشجو / جویای کار</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input id="audience2" type="checkbox" value="20000000" class="target-audience form-check-input" checked>
-                                            <label for="audience2" class="form-check-label">کارمند</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input id="audience3" type="checkbox" value="40000000" class="target-audience form-check-input">
-                                            <label for="audience3" class="form-check-label">فریلنسر / متخصص</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input id="audience4" type="checkbox" value="80000000" class="target-audience form-check-input">
-                                            <label for="audience4" class="form-check-label">مدیر / کارآفرین</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Adjustments Section -->
-                                <h3 class="fw-semibold text-dark mb-4 border-bottom pb-3 mt-5">۳. عوامل اقتصادی و تنظیمات نهایی</h3>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="inflation" class="form-label">نرخ تورم سالانه (%)</label>
-                                        <input type="number" id="inflation" class="form-control" value="40" min="0">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="personalBrand" class="form-label">برند شخصی مدرس</label>
-                                        <select id="personalBrand" class="form-select">
-                                            <option value="0">ناشناخته (0%)</option>
-                                            <option value="0.15" selected>شناخته‌شده (+15%)</option>
-                                            <option value="0.35">برند قوی/سلبریتی (+35%)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="competition" class="form-label">سطح رقابت در بازار</label>
-                                        <select id="competition" class="form-select">
-                                            <option value="0.2">بدون رقیب (+20%)</option>
-                                            <option value="0" selected>رقابت کم (0%)</option>
-                                            <option value="-0.15">رقابت بالا (-15%)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">تعدیل‌کننده‌های دیگر</label>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="form-check me-3 mb-2">
-                                                <input id="moneyBack" type="checkbox" value="0.05" class="adjustment-factor form-check-input">
-                                                <label for="moneyBack" class="form-check-label">ضمانت بازگشت وجه (+5%)</label>
-                                            </div>
-                                            <div class="form-check me-3 mb-2">
-                                                <input id="freeSession" type="checkbox" class="adjustment-factor form-check-input">
-                                                <label for="freeSession" class="form-check-label">جلسه اول رایگان <span id="freeSessionBonus" class="text-success fw-bold"></span></label>
-                                            </div>
-                                            <div class="form-check me-3 mb-2">
-                                                <input id="testimonials" type="checkbox" value="0.15" class="adjustment-factor form-check-input">
-                                                <label for="testimonials" class="form-check-label">نمونه موفق/رضایت (+15%)</label>
-                                            </div>
-                                            <div class="form-check me-3 mb-2">
-                                                <input id="certificate" type="checkbox" value="0.2" class="adjustment-factor form-check-input">
-                                                <label for="certificate" class="form-check-label">گواهینامه معتبر (+20%)</label>
-                                            </div>
-                                            <div class="form-check me-3 mb-2">
-                                                <input id="installments" type="checkbox" value="-0.1" class="adjustment-factor form-check-input">
-                                                <label for="installments" class="form-check-label">فروش قسطی (-10%)</label>
-                                            </div>
-                                            <div class="form-check me-3 mb-2">
-                                                <input id="launch" type="checkbox" value="-0.3" class="adjustment-factor form-check-input">
-                                                <label for="launch" class="form-check-label">کمپین لانچ (-30%)</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div id="calculator-pane" class="tab-pane active">
+                 <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-8 bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-200/50">
+                    <!-- Right/Input Section -->
+                    <div class="lg:col-span-8 space-y-8">
+                        <section>
+                            <h2 class="text-2xl font-bold text-slate-800 mb-6">۱. مشخصات و ارزش محتوا (CV)</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                <div class="flex items-center justify-between"><label for="depth" class="text-base font-medium text-slate-600">عمق و سطح دوره</label><select id="depth" class="form-select w-1/2"><option value="5">مقدماتی</option><option value="7" selected>متوسط</option><option value="10">پیشرفته</option></select></div>
+                                <div class="flex items-center justify-between"><label for="contentType" class="text-base font-medium text-slate-600">نوع محتوا (مسکن/ویتامین)</label><select id="contentType" class="form-select w-1/2"><option value="1">ویتامین (x1.0)</option><option value="1.25" selected>مسکن (x1.25)</option></select></div>
+                                <div class="flex items-center justify-between"><label for="duration" class="text-base font-medium text-slate-600">مدت زمان دوره (ساعت)</label><input type="number" id="duration" class="form-input w-1/2 text-center" value="20" min="1"></div>
+                                <div class="flex items-center justify-between"><label for="uniqueness" class="text-base font-medium text-slate-600">منحصربه‌فرد بودن محتوا</label><select id="uniqueness" class="form-select w-1/2"><option value="4">عمومی</option><option value="8" selected>تخصصی</option><option value="10">نایاب</option></select></div>
+                                <div class="flex items-center justify-between"><label for="valueCoefficient" class="text-base font-medium text-slate-600">نرخ پایه ساعتی (تومان)</label><input type="number" id="valueCoefficient" class="form-input w-1/2 text-center" value="2500" min="0" step="100"></div>
+                                <div class="flex items-center justify-between"><label for="productionQuality" class="text-base font-medium text-slate-600">کیفیت تولید (<span id="productionQualityValue" class="font-bold">8</span>/10)</label><input type="range" id="productionQuality" class="form-range w-1/2" value="8" min="1" max="10" step="1"></div>
                             </div>
-                        </div>
+                        </section>
+
+                        <section>
+                             <h2 class="text-2xl font-bold text-slate-800 mb-6">۲. منتورینگ و جامعه هدف</h2>
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                <div class="flex items-center justify-between"><label for="mentoring" class="text-base font-medium text-slate-600">سطح منتورینگ</label><select id="mentoring" class="form-select w-1/2"><option value="1">بدون منتور</option><option value="1.5" selected>گروهی</option><option value="2.2">گروهی + تضمین موفقیت</option><option value="2.5">شخصی (1:1)</option><option value="3.5">شخصی + ضمانت شغلی</option></select></div>
+                                <div>
+                                    <label class="text-base font-medium text-slate-600 mb-3 block">جامعه هدف (انتخاب چندگانه)</label>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center"><input id="audience1" type="checkbox" value="10000000" class="target-audience form-check-input h-5 w-5 rounded"><label for="audience1" class="mr-3 text-base text-slate-600">دانشجو / جویای کار</label></div>
+                                        <div class="flex items-center"><input id="audience2" type="checkbox" value="20000000" class="target-audience form-check-input h-5 w-5 rounded" checked><label for="audience2" class="mr-3 text-base text-slate-600">کارمند</label></div>
+                                        <div class="flex items-center"><input id="audience3" type="checkbox" value="40000000" class="target-audience form-check-input h-5 w-5 rounded"><label for="audience3" class="mr-3 text-base text-slate-600">فریلنسر / متخصص</label></div>
+                                        <div class="flex items-center"><input id="audience4" type="checkbox" value="80000000" class="target-audience form-check-input h-5 w-5 rounded"><label for="audience4" class="mr-3 text-base text-slate-600">مدیر / کارآفرین</label></div>
+                                    </div>
+                                </div>
+                             </div>
+                        </section>
+                        
+                         <section>
+                             <h2 class="text-2xl font-bold text-slate-800 mb-6">۳. عوامل اقتصادی و تنظیمات نهایی</h2>
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                <div class="flex items-center justify-between"><label for="inflation" class="text-base font-medium text-slate-600">نرخ تورم سالانه (%)</label><input type="number" id="inflation" class="form-input w-1/2 text-center" value="40" min="0"></div>
+                                <div class="flex items-center justify-between"><label for="personalBrand" class="text-base font-medium text-slate-600">برند شخصی مدرس</label>
+                                    <select id="personalBrand" class="form-select w-1/2">
+                                        <option value="0">ناشناخته (0%)</option>
+                                        <option value="0.15" selected>شناخته‌شده (+15%)</option>
+                                        <option value="0.35">برند قوی (+35%)</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-between"><label for="competition" class="text-base font-medium text-slate-600">سطح رقابت در بازار</label>
+                                    <select id="competition" class="form-select w-1/2">
+                                        <option value="0.2">بدون رقیب (+20%)</option>
+                                        <option value="0" selected>رقابت کم (0%)</option>
+                                        <option value="-0.15">رقابت بالا (-15%)</option>
+                                    </select>
+                                </div>
+                             </div>
+                             <div class="mt-6">
+                                <label class="block text-base font-medium text-slate-600 mb-3">تعدیل‌کننده‌ها</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                                    <div class="flex items-center"><input id="moneyBack" type="checkbox" value="0.05" class="adjustment-factor form-check-input h-5 w-5 rounded"><label for="moneyBack" class="mr-3 text-base text-slate-600">ضمانت بازگشت وجه (+5%)</label></div>
+                                    <div class="flex items-center"><input id="testimonials" type="checkbox" value="0.15" class="adjustment-factor form-check-input h-5 w-5 rounded"><label for="testimonials" class="mr-3 text-base text-slate-600">نمونه موفق/رضایت (+15%)</label></div>
+                                    <div class="flex items-center"><input id="certificate" type="checkbox" value="0.2" class="adjustment-factor form-check-input h-5 w-5 rounded"><label for="certificate" class="mr-3 text-base text-slate-600">گواهینامه معتبر (+20%)</label></div>
+                                    <div class="flex items-center"><input id="installments" type="checkbox" value="-0.1" class="adjustment-factor form-check-input h-5 w-5 rounded"><label for="installments" class="mr-3 text-base text-slate-600">فروش قسطی (-10%)</label></div>
+                                    <div class="flex items-center"><input id="launch" type="checkbox" value="-0.3" class="adjustment-factor form-check-input h-5 w-5 rounded"><label for="launch" class="mr-3 text-base text-slate-600">کمپین لانچ (-30%)</label></div>
+                                    <div class="flex items-center"><input id="freeSession" type="checkbox" class="adjustment-factor form-check-input h-5 w-5 rounded"><label for="freeSession" class="mr-3 text-base text-slate-600">جلسه اول رایگان <span id="freeSessionBonus" class="text-green-600 font-bold"></span></label></div>
+                                </div>
+                             </div>
+                         </section>
+
                     </div>
-
-                    <!-- Output Section -->
-                    <div class="col-lg-5">
-                        <div class="card p-4 sticky-top" style="top: 2rem;">
-                            <div class="card-body">
-                                <h3 class="fw-semibold text-dark mb-3">📊 نتایج محاسبه</h3>
-                                <div class="list-group list-group-flush mb-4">
-                                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                        <span class="text-secondary">امتیاز ارزش محتوا (CV):</span>
-                                        <span id="cvScore" class="h4 fw-bold output-value mb-0">0</span>
-                                    </div>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                        <span class="text-secondary">ضریب منتورینگ (M):</span>
-                                        <span id="mentoringMultiplier" class="h4 fw-bold output-value mb-0">x 1</span>
-                                    </div>
-                                    <div class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                        <span class="text-secondary">شاخص اقتصادی (EI):</span>
-                                        <span id="economicIndex" class="h4 fw-bold output-value mb-0">1.0</span>
-                                    </div>
-                                </div>
-
-                                <div class="final-price-card p-4 rounded-4 text-white text-center">
-                                    <p class="mb-2 fs-5">قیمت نهایی پیشنهادی</p>
-                                    <h2 id="finalPrice" class="display-4 fw-bold mb-0">0 تومان</h2>
-                                </div>
-                            
-                                <div class="text-center pt-3">
-                                    <p id="goldenRule" class="text-secondary"></p>
-                                </div>
-
-                                <!-- New Hormozi Section -->
-                                <div class="card mt-4 bg-light">
-                                    <div class="card-body">
-                                        <h4 class="fw-semibold text-dark mb-3 text-center">شاخص ارزش الکس هرمزی</h4>
-                                        <div class="list-group list-group-flush">
-                                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent" title="نتیجه‌ای که مشتری آرزو دارد به آن برسد. دوره‌های پیشرفته و مسکن بالاترین امتیاز را دارند.">
-                                                <span>نتیجه رویایی:</span>
-                                                <span id="hormoziDream" class="fw-bold output-value">0 / 100</span>
-                                            </div>
-                                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent" title="باور مشتری به اینکه با این دوره به نتیجه می‌رسد. برند مدرس، نمونه‌های موفق و سطح منتورینگ در آن موثر است.">
-                                                <span>باور به موفقیت:</span>
-                                                <span id="hormoziLikelihood" class="fw-bold output-value">0 / 100</span>
-                                            </div>
-                                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent" title="مدت زمان لازم برای رسیدن به نتیجه. هرچه این عدد (بر اساس ساعت دوره) کمتر باشد، ارزش نهایی بالاتر است.">
-                                                <span>تاخیر زمانی (معکوس):</span>
-                                                <span id="hormoziTime" class="fw-bold output-value">0</span>
-                                            </div>
-                                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent" title="میزان تلاش، سختی و ریسک برای مشتری. برند ناشناخته ریسک را بالا می‌برد و عواملی مثل ضمانت‌ها و برند قوی آن را کاهش می‌دهند.">
-                                                <span>تلاش، فداکاری و ریسک (معکوس):</span>
-                                                <span id="hormoziEffort" class="fw-bold output-value">0</span>
-                                            </div>
-                                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent border-top mt-2 pt-2">
-                                                <span class="h5 mb-0">امتیاز نهایی ارزش:</span>
-                                                <span id="hormoziFinalScore" class="h4 fw-bold text-success mb-0">0</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <!-- Left/Output Section -->
+                    <div class="lg:col-span-4 mt-8 lg:mt-0">
+                        <div class="lg:sticky lg:top-8 bg-slate-50 rounded-2xl p-6 space-y-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-4 text-center">📊 نتایج محاسبه</h3>
+                                <div class="space-y-4 text-lg">
+                                    <div class="flex justify-between items-center"><span class="text-slate-500">امتیاز ارزش محتوا (CV):</span><span id="cvScore" class="font-vazir-black text-2xl text-rose-600">0</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500">ضریب منتورینگ (M):</span><span id="mentoringMultiplier" class="font-vazir-black text-2xl text-sky-600">x 1</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-slate-500">شاخص اقتصادی (EI):</span><span id="economicIndex" class="font-vazir-black text-2xl text-teal-600">1.0</span></div>
                                 </div>
                             </div>
+
+                            <div class="bg-amber-400 p-5 rounded-xl text-center shadow-lg shadow-amber-400/20">
+                                <p class="mb-1 text-base font-semibold text-amber-900">قیمت نهایی پیشنهادی</p>
+                                <h2 id="finalPrice" class="text-5xl font-vazir-black tracking-tight text-white">0 تومان</h2>
+                            </div>
+                            
+                            <div class="text-center pt-1">
+                                <p id="goldenRule" class="text-slate-500 text-sm"></p>
+                            </div>
+
+                            <div class="bg-white rounded-lg p-4 border border-slate-200/50">
+                                <h4 class="font-bold text-slate-800 mb-3 text-center text-base">شاخص ارزش الکس هرمزی</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between items-center"><span title="نتیجه‌ای که مشتری آرزو دارد به آن برسد. دوره‌های پیشرفته و مسکن بالاترین امتیاز را دارند.">نتیجه رویایی:</span><span id="hormoziDream" class="font-bold text-amber-600">0 / 100</span></div>
+                                    <div class="flex justify-between items-center"><span title="باور مشتری به اینکه با این دوره به نتیجه می‌رسد. برند مدرس، نمونه‌های موفق و سطح منتورینگ در آن موثر است.">باور به موفقیت:</span><span id="hormoziLikelihood" class="font-bold text-amber-600">0 / 100</span></div>
+                                    <div class="flex justify-between items-center"><span title="مدت زمان لازم برای رسیدن به نتیجه. هرچه این عدد (بر اساس ساعت دوره) کمتر باشد، ارزش نهایی بالاتر است.">تاخیر زمانی (معکوس):</span><span id="hormoziTime" class="font-bold text-slate-600">0</span></div>
+                                    <div class="flex justify-between items-center"><span title="میزان تلاش، سختی و ریسک برای مشتری. برند ناشناخته ریسک را بالا می‌برد و عواملی مثل ضمانت‌ها و برند قوی آن را کاهش می‌ده دهند.">تلاش، فداکاری و ریسک (معکوس):</span><span id="hormoziEffort" class="font-bold text-slate-600">0</span></div>
+                                    <div class="flex justify-between items-center border-t border-slate-200 mt-3 pt-3"><span class="font-semibold text-base">امتیاز نهایی ارزش:</span><span id="hormoziFinalScore" class="font-extrabold text-2xl text-green-600">0</span></div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Methodology Tab Pane -->
-            <div class="tab-pane fade" id="methodology-tab-pane" role="tabpanel" aria-labelledby="methodology-tab" tabindex="0">
-                 <div class="card p-4 p-md-5 methodology-section">
-                    <div class="card-body">
-                        <h2 class="fw-bold text-dark border-bottom pb-3 mb-4">راهنمای جامع و مبانی علمی مدل قیمت‌گذاری</h2>
-                        <p class="lead">این ماشین‌حساب بر اساس یک مدل هیبریدی عمل می‌کند که دو استراتژی قدرتمند قیمت‌گذاری را ترکیب می‌کند: <strong class="output-value">قیمت‌گذاری مبتنی بر ارزش (Value-Based Pricing)</strong> و <strong class="output-value">تعدیل اقتصادی (Economic Adjustment)</strong>. هدف، رسیدن به قیمتی است که هم ارزش واقعی محصول شما را منعکس کند و هم با توان خرید جامعه هدف شما متناسب باشد. در ادامه، تک‌تک ورودی‌ها و منطق علمی پشت آن‌ها تشریح می‌شود.</p>
-
-                        <hr class="my-5">
-
-                        <h3 class="fw-semibold text-dark mb-3">۱. فرمول اصلی و اجزای آن</h3>
-                        <p>ساختار کلی محاسبات به شکل زیر است و هر ورودی در ماشین‌حساب، یکی از اجزای این فرمول را تحت تأثیر قرار می‌دهد:</p>
-                        <div class="bg-light p-3 rounded text-center my-3">
-                            <code class="fs-5">قیمت نهایی = [ (CV × نرخ پایه ساعتی) × M ] × EI × (۱ + جمع ضرایب تعدیل)</code>
-                        </div>
-
-                        <!-- CV Section -->
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش اول: هسته ارزش ذاتی دوره (Core Value)</h4>
-                        
-                        <h5>عمق و سطح دوره</h5>
-                        <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> با وزن ۴۰٪، بیشترین تأثیر را در محاسبه «امتیاز ارزش محتوا (CV)» دارد. این مهم‌ترین عامل در تعیین ارزش پایه است.</li>
-                            <li><strong>مبنای علمی:</strong> اصل کمیابی (Scarcity) و تخصص در اقتصاد. محتوای پیشرفته نیازمند تخصص بالاتر و کمیاب‌تر است و زمان بیشتری برای تولید آن صرف شده، بنابراین ارزش ذاتی و درک‌شده آن بسیار بیشتر است.</li>
-                            <li><strong>ارتباط با هرمزی:</strong> مستقیماً بر «نتیجه رویایی» (هرچه پیشرفته‌تر، نتیجه بزرگتر و دست‌نیافتنی‌تر) و «تلاش و فداکاری» (دوره‌های پیشرفته نیازمند تلاش بیشتر از سوی دانشجو) تأثیر می‌گذارد.</li>
-                        </ul>
-
-                        <h5>نوع محتوا (مسکن/ویتامین)</h5>
-                        <ul>
-                             <li><strong>نقش در فرمول قیمت:</strong> امتیاز CV را در ضریب ۱.۲۵ (برای مسکن) ضرب می‌کند.</li>
-                            <li><strong>مبنای علمی:</strong> مفهوم کلیدی در مدیریت محصول و بازاریابی. محصول «مسکن» (Painkiller) یک مشکل فوری و دردناک را حل می‌کند و ارزش درک‌شده بسیار بالاتری نزد مشتری دارد زیرا نیاز آنی او را برطرف می‌کند. در مقابل، «ویتامین» (Vitamin) یک بهبود عمومی ایجاد می‌کند. ضریب ۲۵٪ افزایش ارزش برای مسکن، منعکس‌کننده این فوریت و ارزش بالاتر است.</li>
-                            <li><strong>ارتباط با هرمزی:</strong> تأثیر مستقیم و قوی بر «نتیجه رویایی» دارد؛ حل یک درد، نتیجه‌ای بسیار مطلوب‌تر از یک بهبود جزئی است.</li>
-                        </ul>
-
-                        <h5>مدت زمان دوره</h5>
-                        <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> با وزن ۳۰٪ در محاسبه امتیاز CV نقش دارد.</li>
-                            <li><strong>مبنای علمی:</strong> ساده‌ترین شاخص ارزش مبتنی بر کمیت. این عامل به مشتری حس "دریافت بیشتر در ازای پول" را می‌دهد.</li>
-                            <li><strong>ارتباط با هرمزی:</strong> عامل اصلی تعیین‌کننده «تأخیر زمانی» است. هرچه دوره طولانی‌تر، تأخیر برای رسیدن به نتیجه بیشتر و ارزش پیشنهادی از دید هرمزی کمتر است. این یک رابطه معکوس است که باید در طراحی دوره به آن توجه کرد.</li>
-                        </ul>
-
-                        <h5>منحصربه‌فرد بودن محتوا</h5>
-                        <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> با وزن ۲۰٪ در محاسبه امتیاز CV نقش دارد.</li>
-                            <li><strong>مبنای علمی:</strong> برگرفته از استراتژی «اقیانوس آبی» (Blue Ocean Strategy). هرچه محتوا نایاب‌تر باشد، رقابت کمتر و قدرت قیمت‌گذاری بالاتر است زیرا شما جایگزین کمتری دارید.</li>
-                            <li><strong>ارتباط با هرمزی:</strong> می‌تواند «نتیجه رویایی» را (با ارائه یک نتیجه جدید و متفاوت) و «باور به موفقیت» را (چون راه حل جدیدی ارائه می‌دهد که شاید دیگران شکست خورده‌اند) افزایش دهد.</li>
-                        </ul>
-                        
-                        <h5>کیفیت تولید</h5>
-                        <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> با وزن ۱۰٪ در محاسبه امتیاز CV نقش دارد.</li>
-                            <li><strong>مبنای علمی:</strong> بر اساس اصول تجربه کاربری (UX) و روانشناسی برندینگ. کیفیت بالا (صدا، تصویر، تدوین) اعتبار (Credibility) برند شما را افزایش داده و ارزش درک‌شده را بالا می‌برد. کیفیت پایین می‌تواند کل ارزش محتوای عالی شما را زیر سوال ببرد.</li>
-                            <li><strong>ارتباط با تابع جلسه اول رایگان:</strong> این عامل مستقیماً در فرمول ضریب جلسه اول رایگان نقش دارد. هرچه کیفیت بالاتر باشد، جلسه اول تأثیرگذارتر خواهد بود.</li>
-                        </ul>
-
-                        <h5>نرخ پایه ساعتی</h5>
-                        <ul>
-                             <li><strong>نقش در فرمول قیمت:</strong> این عدد، امتیاز CV (یک عدد انتزاعی) را به یک ارزش پولی اولیه تبدیل می‌کند و به عنوان یک **ضریب کالیبراسیون** عمل می‌کند.</li>
-                             <li><strong>مبنای علمی:</strong> این فیلد به شما اجازه می‌دهد مدل را با واقعیت‌های بازار، هزینه‌های ثابت و متغیر کسب‌وکار (مانند هزینه تبلیغات، تیم و...) و استراتژی سودآوری خودتان هماهنگ کنید. مقادیر پیش‌فرض برای بازار ایران بهینه‌سازی شده‌اند.</li>
-                        </ul>
-
-                        <!-- Mentoring Section -->
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش دوم: ارزش افزوده انسانی (ضریب منتورینگ M)</h4>
-                        <h5>سطح منتورینگ</h5>
-                        <ul>
-                             <li><strong>نقش در فرمول قیمت:</strong> قیمت پایه را مستقیماً در ضریب خود (۱.۵ تا ۳.۵) ضرب می‌کند. این یک اهرم بسیار قدرتمند برای افزایش قیمت است.</li>
-                             <li><strong>مبنای علمی:</strong> تعامل انسانی و پشتیبانی می‌تواند ارزش یک دوره را ۲ تا ۴ برابر افزایش دهد. (منبع: تحلیل داده‌های پلتفرم‌هایی مانند Coursera و Udacity). ضمانت‌ها (موفقیت یا شغلی) بالاترین ارزش را ایجاد می‌کنند زیرا بر اساس اصل «ریسک‌زدایی» (Risk Reversal)، ریسک را به طور کامل از دوش دانشجو برداشته و به کسب‌وکار منتقل می‌کنند. این انتقال ریسک، ارزش بسیار بالایی دارد.</li>
-                             <li><strong>ارتباط با هرمزی:</strong> تأثیر بسیار قوی بر «باور به موفقیت» (چون دانشجو تنها نیست) و کاهش «تلاش و فداکاری» (چون راهنمایی دریافت می‌کند) دارد. وجود ضمانت همچنین «نتیجه رویایی» را به امتیاز کامل ۱۰۰ می‌رساند.</li>
-                        </ul>
-
-                        <!-- Economic Section -->
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش سوم: تطبیق با واقعیت بازار (شاخص اقتصادی EI)</h4>
-                        <h5>جامعه هدف</h5>
-                         <ul>
-                             <li><strong>نقش در فرمول قیمت:</strong> درآمد متوسط جامعه هدف، بخش اصلی فرمول شاخص اقتصادی (EI) را تشکیل می‌دهد.</li>
-                             <li><strong>مبنای علمی:</strong> اصل قیمت‌گذاری «توانایی پرداخت» (Ability to Pay). قیمت باید متناسب با قدرت خرید مشتری باشد. انتخاب چند گروه، میانگین درآمد آن‌ها را محاسبه می‌کند تا قیمتی بهینه برای بازار گسترده‌تر به دست آید.</li>
-                         </ul>
-                        <h5>نرخ تورم سالانه</h5>
-                         <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> به عنوان یک ضریب افزایشی در فرمول شاخص اقتصادی (EI) عمل می‌کند. فرمول آن: <code class="user-select-all">(۱ + نرخ تورم / ۱۰۰)</code></li>
-                            <li><strong>مبنای علمی:</strong> حفظ ارزش قیمت در طول زمان در برابر کاهش ارزش پول. این یک اصل استاندارد در قیمت‌گذاری بلندمدت برای کسب‌وکارهای پایدار است.</li>
-                         </ul>
-                        
-                        <!-- Adjustments Section -->
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش چهارم: تعدیل‌کننده‌های استراتژیک و روانشناسی</h4>
-                        <p>این ضرایب به صورت <code class="user-select-all">(۱ + جمع ضرایب)</code> بر قیمت نهایی اعمال می‌شوند.</p>
-                        
-                        <h5>برند شخصی مدرس</h5>
-                         <ul>
-                             <li><strong>نقش در فرمول قیمت:</strong> قیمت را بین ۰٪ تا ۳۵٪ افزایش می‌دهد.</li>
-                             <li><strong>مبنای علمی:</strong> این ضریب بر اساس مفهوم «ارزش ویژه برند» (Brand Equity) تعیین شده است. یک برند قوی بر اساس اصل «اعتماد» (Trust) عمل می‌کند. مشتریان حاضرند برای کاهش ریسک و اطمینان از کیفیت، هزینه بیشتری بپردازند (Premium Price). ضریب ۱۵٪ برای برند شناخته‌شده نشان‌دهنده سطح اولیه اعتماد و ضریب ۳۵٪ برای برند سلبریتی، نشان‌دهنده بالاترین سطح اعتماد و ریسک‌پذیری پایین برای مشتری است.</li>
-                             <li><strong>ارتباط با هرمزی:</strong> مستقیماً «باور به موفقیت» را افزایش می‌دهد. همچنین «تلاش و فداکاری» (ریسک درک‌شده) را برای برند شناخته‌شده کاهش و برای برند ناشناخته (به دلیل عدم قطعیت) افزایش می‌دهد.</li>
-                         </ul>
-
-                        <h5>سطح رقابت در بازار</h5>
-                         <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> قیمت را بین ۱۵٪- تا ۲۰٪+ تعدیل می‌کند.</li>
-                            <li><strong>مبنای علمی:</strong> اصول پایه‌ای عرضه و تقاضا و مدل «پنج نیروی رقابتی پورتر». در بازار شلوغ (رقابت بالا)، برای جذب مشتری باید قیمتی رقابتی‌تر ارائه داد. در بازار انحصاری (بدون رقیب)، قدرت قیمت‌گذاری با شماست و می‌توانید قیمت بالاتری تعیین کنید (Price Skimming).</li>
-                         </ul>
-
-                        <h5>جلسه اول رایگان (ضریب پویا ۲٪+ تا ۱۲٪+)</h5>
-                         <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> ضریب مثبت آن به جمع کل ضرایب اضافه می‌شود.</li>
-                            <li><strong>مبنای علمی:</strong> این یک تاکتیک قدرتمند «ریسک‌زدایی» (Risk Reversal) است. با حذف کامل ریسک اولیه، مقاومت ذهنی مشتری برای پرداخت قیمت بالاتر کاهش می‌یابد.
-                            <br><strong>فرمول تابع:</strong> <code class="user-select-all">ضریب = (پایه_عمق) + (پایه_کیفیت)</code>
-                            که در آن <code class="user-select-all">پایه_عمق</code> بر اساس سطح دوره (مقدماتی=۱٪، متوسط=۳٪، پیشرفته=۵٪) و <code class="user-select-all">پایه_کیفیت</code> بر اساس کیفیت تولید <code class="user-select-all">(امتیاز_کیفیت / ۱۰) * ۷٪</code> محاسبه می‌شود. منطق این است که هرچه محصول بهتر باشد، نمایش آن تأثیر بیشتری در اثبات ارزش دارد.</li>
-                         </ul>
-
-                        <h5>سایر تعدیل‌کننده‌ها</h5>
-                         <ul>
-                            <li><strong>نقش در فرمول قیمت:</strong> هر کدام ضریب ثابت خود را به جمع کل ضرایب اضافه می‌کنند.</li>
-                            <li><strong>مبنای علمی:</strong>
-                                <ul>
-                                    <li><strong>نمونه موفق (+۱۵٪):</strong> اصل «اثبات اجتماعی» (Social Proof) از کتاب «نفوذ» رابرت سیالدینی. دیدن موفقیت دیگران، باور به موفقیت را در مشتری جدید به شدت افزایش می‌دهد.</li>
-                                    <li><strong>ضمانت بازگشت وجه (+۵٪):</strong> یک تاکتیک «ریسک‌زدایی» دیگر که مقاومت مشتری را کاهش می‌دهد.</li>
-                                    <li><strong>گواهینامه معتبر (+۲۰٪):</strong> افزودن یک نتیجه ملموس و قابل ارائه (Tangible Outcome) به دوره که ارزش آن را برای کاربرانی که به دنبال ارتقای رزومه هستند، بالا می‌برد.</li>
-                                    <li><strong>فروش قسطی (-۱۰٪) و کمپین لانچ (-۳۰٪):</strong> ابزارهای بازاریابی برای ایجاد «فوریت» (Urgency) و کاهش «اصطکاک خرید» (Purchase Friction) جهت افزایش نرخ تبدیل (Conversion Rate).</li>
-                                </ul>
-                            </li>
-                         </ul>
-
-                        <hr class="my-5">
-                        
-                        <h3 class="fw-semibold text-dark mb-3">۴. شاخص ارزش الکس هرمزی</h3>
-                        <p>این بخش، پیشنهاد شما را از دیدگاه مشتری تحلیل می‌کند. فرمول هرمزی (<code class="user-select-all">ارزش = (نتیجه رویایی × باور به موفقیت) / (تأخیر زمانی × تلاش و فداکاری)</code>) یک مدل ذهنی قدرتمند برای سنجش جذابیت یک پیشنهاد است. این ماشین‌حساب متغیرهای شما را به این چهار عامل نگاشت می‌کند تا به شما یک «امتیاز ارزش» نهایی بدهد.</p>
-
-                    </div>
-                </div>
+            <div id="methodology-pane" class="tab-pane">
+                <article class="prose max-w-none prose-slate p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-lg border border-slate-200/50">
+                     <h1>راهنمای جامع و مبانی علمی مدل قیمت‌گذاری</h1>
+                    <p>این ماشین‌حساب بر اساس یک مدل هیبریدی عمل می‌کند که دو استراتژی قدرتمند قیمت‌گذاری را ترکیب می‌کند: <strong>قیمت‌گذاری مبتنی بر ارزش (Value-Based Pricing)</strong> و <strong>تعدیل اقتصادی (Economic Adjustment)</strong>. هدف، رسیدن به قیمتی است که هم ارزش واقعی محصول شما را منعکس کند و هم با توان خرید جامعه هدف شما متناسب باشد. در ادامه، تک‌تک ورودی‌ها و منطق علمی پشت آن‌ها تشریح می‌شود.</p>
+                    <h2>۱. فرمول اصلی و اجزای آن</h2>
+                    <p>ساختار کلی محاسبات به شکل زیر است و هر ورودی در ماشین‌حساب، یکی از اجزای این فرمول را تحت تأثیر قرار می‌دهد:</p>
+                    <div class="bg-slate-100 p-3 rounded text-center my-3"><code>قیمت نهایی = [ (CV × نرخ پایه ساعتی) × M ] × EI × (۱ + جمع ضرایب تعدیل)</code></div>
+                    <h3>بخش اول: هسته ارزش ذاتی دوره (Core Value)</h3>
+                    <h4>عمق و سطح دوره</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> با وزن ۴۰٪، بیشترین تأثیر را در محاسبه «امتیاز ارزش محتوا (CV)» دارد. این مهم‌ترین عامل در تعیین ارزش پایه است.</li><li><strong>مبنای علمی:</strong> اصل کمیابی (Scarcity) و تخصص در اقتصاد. محتوای پیشرفته نیازمند تخصص بالاتر و کمیاب‌تر است و زمان بیشتری برای تولید آن صرف شده، بنابراین ارزش ذاتی و درک‌شده آن بسیار بیشتر است.</li><li><strong>ارتباط با هرمزی:</strong> مستقیماً بر «نتیجه رویایی» (هرچه پیشرفته‌تر، نتیجه بزرگتر و دست‌نیافتنی‌تر) و «تلاش و فداکاری» (دوره‌های پیشرفته نیازمند تلاش بیشتر از سوی دانشجو) تأثیر می‌گذارد.</li></ul>
+                    <h4>نوع محتوا (مسکن/ویتامین)</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> امتیاز CV را در ضریب ۱.۲۵ (برای مسکن) ضرب می‌کند.</li><li><strong>مبنای علمی:</strong> مفهوم کلیدی در مدیریت محصول و بازاریابی. محصول «مسکن» (Painkiller) یک مشکل فوری و دردناک را حل می‌کند و ارزش درک‌شده بسیار بالاتری نزد مشتری دارد زیرا نیاز آنی او را برطرف می‌کند. در مقابل، «ویتامین» (Vitamin) یک بهبود عمومی ایجاد می‌کند. ضریب ۲۵٪ افزایش ارزش برای مسکن، منعکس‌کننده این فوریت و ارزش بالاتر است.</li><li><strong>ارتباط با هرمزی:</strong> تأثیر مستقیم و قوی بر «نتیجه رویایی» دارد؛ حل یک درد، نتیجه‌ای بسیار مطلوب‌تر از یک بهبود جزئی است.</li></ul>
+                    <h4>مدت زمان دوره</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> با وزن ۳۰٪ در محاسبه امتیاز CV نقش دارد.</li><li><strong>مبنای علمی:</strong> ساده‌ترین شاخص ارزش مبتنی بر کمیت. این عامل به مشتری حس "دریافت بیشتر در ازای پول" را می‌دهد.</li><li><strong>ارتباط با هرمزی:</strong> عامل اصلی تعیین‌کننده «تأخیر زمانی» است. هرچه دوره طولانی‌تر، تأخیر برای رسیدن به نتیجه بیشتر و ارزش پیشنهادی از دید هرمزی کمتر است. این یک رابطه معکوس است که باید در طراحی دوره به آن توجه کرد.</li></ul>
+                    <h4>منحصربه‌فرد بودن محتوا</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> با وزن ۲۰٪ در محاسبه امتیاز CV نقش دارد.</li><li><strong>مبنای علمی:</strong> برگرفته از استراتژی «اقیانوس آبی» (Blue Ocean Strategy). هرچه محتوا نایاب‌تر باشد، رقابت کمتر و قدرت قیمت‌گذاری بالاتر است زیرا شما جایگزین کمتری دارید.</li><li><strong>ارتباط با هرمزی:</strong> می‌تواند «نتیجه رویایی» را (با ارائه یک نتیجه جدید و متفاوت) و «باور به موفقیت» را (چون راه حل جدیدی ارائه می‌دهد که شاید دیگران شکست خورده‌اند) افزایش دهد.</li></ul>
+                    <h4>کیفیت تولید</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> با وزن ۱۰٪ در محاسبه امتیاز CV نقش دارد.</li><li><strong>مبنای علمی:</strong> بر اساس اصول تجربه کاربری (UX) و روانشناسی برندینگ. کیفیت بالا (صدا، تصویر، تدوین) اعتبار (Credibility) برند شما را افزایش داده و ارزش درک‌شده را بالا می‌برد. کیفیت پایین می‌تواند کل ارزش محتوای عالی شما را زیر سوال ببرد.</li><li><strong>ارتباط با تابع جلسه اول رایگان:</strong> این عامل مستقیماً در فرمول ضریب جلسه اول رایگان نقش دارد. هرچه کیفیت بالاتر باشد، جلسه اول تأثیرگذارتر خواهد بود.</li></ul>
+                    <h4>نرخ پایه ساعتی</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> این عدد، امتیاز CV (یک عدد انتزاعی) را به یک ارزش پولی اولیه تبدیل می‌کند و به عنوان یک <strong>ضریب کالیبراسیون</strong> عمل می‌کند.</li><li><strong>مبنای علمی:</strong> این فیلد به شما اجازه می‌دهد مدل را با واقعیت‌های بازار، هزینه‌های ثابت و متغیر کسب‌وکار (مانند هزینه تبلیغات، تیم و...) و استراتژی سودآوری خودتان هماهنگ کنید. مقادیر پیش‌فرض برای بازار ایران بهینه‌سازی شده‌اند.</li></ul>
+                    <h3>بخش دوم: ارزش افزوده انسانی (ضریب منتورینگ M)</h3>
+                    <h4>سطح منتورینگ</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> قیمت پایه را مستقیماً در ضریب خود (۱.۵ تا ۳.۵) ضرب می‌کند. این یک اهرم بسیار قدرتمند برای افزایش قیمت است.</li><li><strong>مبنای علمی:</strong> تعامل انسانی و پشتیبانی می‌تواند ارزش یک دوره را ۲ تا ۴ برابر افزایش دهد. (منبع: تحلیل داده‌های پلتفرم‌هایی مانند Coursera و Udacity). ضمانت‌ها (موفقیت یا شغلی) بالاترین ارزش را ایجاد می‌کنند زیرا بر اساس اصل «ریسک‌زدایی» (Risk Reversal)، ریسک را به طور کامل از دوش دانشجو برداشته و به کسب‌وکار منتقل می‌کنند. این انتقال ریسک، ارزش بسیار بالایی دارد.</li><li><strong>ارتباط با هرمزی:</strong> تأثیر بسیار قوی بر «باور به موفقیت» (چون دانشجو تنها نیست) و کاهش «تلاش و فداکاری» (چون راهنمایی دریافت می‌کند) دارد. وجود ضمانت همچنین «نتیجه رویایی» را به امتیاز کامل ۱۰۰ می‌رساند.</li></ul>
+                    <h3>بخش سوم: تطبیق با واقعیت بازار (شاخص اقتصادی EI)</h3>
+                    <h4>جامعه هدف</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> درآمد متوسط جامعه هدف، بخش اصلی فرمول شاخص اقتصادی (EI) را تشکیل می‌دهد.</li><li><strong>مبنای علمی:</strong> اصل قیمت‌گذاری «توانایی پرداخت» (Ability to Pay). قیمت باید متناسب با قدرت خرید مشتری باشد. انتخاب چند گروه، میانگین درآمد آن‌ها را محاسبه می‌کند تا قیمتی بهینه برای بازار گسترده‌تر به دست آید.</li></ul>
+                    <h4>نرخ تورم سالانه</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> به عنوان یک ضریب افزایشی در فرمول شاخص اقتصادی (EI) عمل می‌کند. فرمول آن: <code>(۱ + نرخ تورم / ۱۰۰)</code></li><li><strong>مبنای علمی:</strong> حفظ ارزش قیمت در طول زمان در برابر کاهش ارزش پول. این یک اصل استاندارد در قیمت‌گذاری بلندمدت برای کسب‌وکارهای پایدار است.</li></ul>
+                    <h3>بخش چهارم: تعدیل‌کننده‌های استراتژیک و روانشناسی</h3>
+                    <p>این ضرایب به صورت <code>(۱ + جمع ضرایب)</code> بر قیمت نهایی اعمال می‌شوند.</p>
+                    <h4>برند شخصی مدرس</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> قیمت را بین ۰٪ تا ۳۵٪ افزایش می‌دهد.</li><li><strong>مبنای علمی:</strong> این ضریب بر اساس مفهوم «ارزش ویژه برند» (Brand Equity) تعیین شده است. یک برند قوی بر اساس اصل «اعتماد» (Trust) عمل می‌کند. مشتریان حاضرند برای کاهش ریسک و اطمینان از کیفیت، هزینه بیشتری بپردازند (Premium Price). ضریب ۱۵٪ برای برند شناخته‌شده نشان‌دهنده سطح اولیه اعتماد و ضریب ۳۵٪ برای برند سلبریتی، نشان‌دهنده بالاترین سطح اعتماد و ریسک‌پذیری پایین برای مشتری است.</li><li><strong>ارتباط با هرمزی:</strong> مستقیماً «باور به موفقیت» را افزایش می‌دهد. همچنین «تلاش و فداکاری» (ریسک درک‌شده) را برای برند شناخته‌شده کاهش و برای برند ناشناخته (به دلیل عدم قطعیت) افزایش می‌دهد.</li></ul>
+                    <h4>سطح رقابت در بازار</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> قیمت را بین ۱۵٪- تا ۲۰٪+ تعدیل می‌کند.</li><li><strong>مبنای علمی:</strong> اصول پایه‌ای عرضه و تقاضا و مدل «پنج نیروی رقابتی پورتر». در بازار شلوغ (رقابت بالا)، برای جذب مشتری باید قیمتی رقابتی‌تر ارائه داد. در بازار انحصاری (بدون رقیب)، قدرت قیمت‌گذاری با شماست و می‌توانید قیمت بالاتری تعیین کنید (Price Skimming).</li></ul>
+                    <h4>جلسه اول رایگان (ضریب پویا ۲٪+ تا ۱۲٪+)</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> ضریب مثبت آن به جمع کل ضرایب اضافه می‌شود.</li><li><strong>مبنای علمی:</strong> این یک تاکتیک قدرتمند «ریسک‌زدایی» (Risk Reversal) است. با حذف کامل ریسک اولیه، مقاومت ذهنی مشتری برای پرداخت قیمت بالاتر کاهش می‌یابد.<br><strong>فرمول تابع:</strong> <code>ضریب = (پایه_عمق) + (پایه_کیفیت)</code> که در آن <code>پایه_عمق</code> بر اساس سطح دوره (مقدماتی=۱٪، متوسط=۳٪، پیشرفته=۵٪) و <code>پایه_کیفیت</code> بر اساس کیفیت تولید <code>(امتیاز_کیفیت / ۱۰) * ۷٪</code> محاسبه می‌شود. منطق این است که هرچه محصول بهتر باشد، نمایش آن تأثیر بیشتری در اثبات ارزش دارد.</li></ul>
+                    <h4>سایر تعدیل‌کننده‌ها</h4>
+                    <ul><li><strong>نقش در فرمول قیمت:</strong> هر کدام ضریب ثابت خود را به جمع کل ضرایب اضافه می‌کنند.</li><li><strong>مبنای علمی:</strong><ul><li><strong>نمونه موفق (+۱۵٪):</strong> اصل «اثبات اجتماعی» (Social Proof) از کتاب «نفوذ» رابرت سیالدینی. دیدن موفقیت دیگران، باور به موفقیت را در مشتری جدید به شدت افزایش می‌دهد.</li><li><strong>ضمانت بازگشت وجه (+۵٪):</strong> یک تاکتیک «ریسک‌زدایی» دیگر که مقاومت مشتری را کاهش می‌دهد.</li><li><strong>گواهینامه معتبر (+۲۰٪):</strong> افزودن یک نتیجه ملموس و قابل ارائه (Tangible Outcome) به دوره که ارزش آن را برای کاربرانی که به دنبال ارتقای رزومه هستند، بالا می‌برد.</li><li><strong>فروش قسطی (-۱۰٪) و کمپین لانچ (-۳۰٪):</strong> ابزارهای بازاریابی برای ایجاد «فوریت» (Urgency) و کاهش «اصطکاک خرید» (Purchase Friction) جهت افزایش نرخ تبدیل (Conversion Rate).</li></ul></li></ul>
+                    <hr>
+                    <h2>۴. شاخص ارزش الکس هرمزی</h2>
+                    <p>این بخش، پیشنهاد شما را از دیدگاه مشتری تحلیل می‌کند. فرمول هرمزی (<code>ارزش = (نتیجه رویایی × باور به موفقیت) / (تأخیر زمانی × تلاش و فداکاری)</code>) یک مدل ذهنی قدرتمند برای سنجش جذابیت یک پیشنهاد است. این ماشین‌حساب متغیرهای شما را به این چهار عامل نگاشت می‌کند تا به شما یک «امتیاز ارزش» نهایی بدهد.</p>
+                </article>
             </div>
             
             <!-- Academic Analysis Tab Pane -->
-            <div class="tab-pane fade" id="academic-tab-pane" role="tabpanel" aria-labelledby="academic-tab" tabindex="0">
-                <div class="card p-4 p-md-5 methodology-section">
-                    <div class="card-body">
-                        <h2 class="fw-bold text-dark border-bottom pb-3 mb-4">تحلیل آکادمیک و بازبینی مدل ماشین‌حساب قیمت‌گذاری دوره</h2>
-                        <p class="lead">بر اساس مدل هیبریدی ارزش‌محور (Value-Based) و تعدیل اقتصادی-رفتاری. این سند، مبانی علمی، آماری و مطالعاتی مورد استفاده در «ماشین‌حساب قیمت‌گذاری دوره» را تشریح می‌کند.</p>
-
-                        <hr class="my-5">
-
-                        <h3 class="fw-semibold text-dark mb-3">مقدمه: مبنای نظری مدل</h3>
-                        <p>مدل قیمت‌گذاری حاضر، یک رویکرد هیبریدی است. این مدل، قیمت‌گذاری سنتی مبتنی بر هزینه (Cost-Plus) یا مبتنی بر رقیب (Competitor-Based) را رد کرده و بر پارادایم <strong class="output-value">"قیمت‌گذاری مبتنی بر ارزش" (Value-Based Pricing)</strong> استوار است.</p>
-                        <p>مبنای علمی این رویکرد در متون مدیریت بازاریابی و اقتصاد رفتاری تثبیت شده است. برخلاف مدل‌های سنتی که قیمت را تابعی از «هزینه تولید» می‌دانند، این مدل قیمت را تابعی از «ارزش ادراک‌شده» (Perceived Value) توسط مشتری تعریف می‌کند. همانطور که در تحلیل‌های Harvard Business Review (HBR) مکرراً تأکید شده، در اقتصاد مدرن، مشتریان هزینه‌ای را نه برای «زمان صرف‌شده» مدرس، بلکه برای <strong class="output-value">«نتیجه حاصل‌شده» (Outcome)</strong> پرداخت می‌کنند.</p>
-                        <p>فرمول اصلی این ماشین‌حساب، این نظریه را در یک ساختار محاسباتی پیاده‌سازی می‌کند:</p>
-                        <div class="bg-light p-3 rounded text-center my-3 fs-5">
-                            $$\text{قیمت نهایی} = [ (\text{CV} \times \text{نرخ پایه ساعتی}) \times M ] \times \text{EI} \times (1 + \sum \text{ضرایب تعدیل})$$
-                        </div>
-
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش اول: هسته ارزش ذاتی (Core Value - CV)</h4>
-                        <p>این بخش، ارزش خام و بنیادین محتوای آموزشی را پیش از افزودن عوامل انسانی یا بازاری محاسبه می‌کند.</p>
-                        
-                        <h5>۱. عمق و سطح دوره (ضریب وزنی: ۴۰٪)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> اصل اقتصادی «کمیابی» (Scarcity) و «تخصص‌گرایی» (Specialization).</li>
-                            <li><strong>تحلیل:</strong> محتوای پیشرفته (Advanced) به دانش تخصصی‌تری نیاز دارد که در بازار کمیاب‌تر است. بر اساس نظریه «سرمایه انسانی» (Human Capital Theory)، دانش پیشرفته‌تر پتانسیل درآمدزایی بالاتری برای دانشجو ایجاد می‌کند (مانند کسب تخصص در مدل‌های زبانی بزرگ که در بلاگ‌های Google AI یا OpenAI معرفی می‌شوند).</li>
-                            <li><strong>اقتصاد رفتاری:</strong> «اثر لنگر قیمتی» (Anchoring Effect). یک دوره با عنوان "پیشرفته" یا "تخصصی"، لنگر قیمتی بسیار بالاتری را در ذهن مخاطب ایجاد می‌کند و قیمت‌های پایین‌تر (مقدماتی) را در مقایسه، ناچیز جلوه می‌دهد.</li>
-                            <li><strong>تأثیر بر فروش:</strong> دوره‌های پیشرفته‌تر، دایره مخاطبان (Audience Size) کمتری دارند، اما به دلیل ارزش ادراک‌شده بالا و نبود جایگزین، «کشش قیمتی» (Price Elasticity) پایینی داشته و امکان فروش با «حاشیه سود» (Profit Margin) بسیار بالاتر را فراهم می‌کنند.</li>
-                            <li><strong>داده آماری:</strong> پژوهش‌های منتشر شده در Nature یا IEEE Spectrum به طور مداوم «شکاف مهارتی» (Skills Gap) در حوزه‌های تخصصی (مانند AI، امنیت سایبری، رایانش کوانتومی) را گزارش می‌دهند. دوره‌هایی که این شکاف‌های پرتقاضا را پر می‌کنند، بالاترین ارزش اقتصادی و قدرت قیمت‌گذاری را دارا هستند.</li>
-                        </ul>
-
-                        <h5>۲. نوع محتوا (مسکن/ویتامین) (ضریب افزایشی: ۱.۲۵x)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> این دسته‌بندی، یک مفهوم کلیدی در «مدیریت محصول» (Product Management) است که در مراکز نوآوری مانند Y Combinator و Stanford HAI به کار می‌رود.</li>
-                            <li><strong>تحلیل:</strong> «مسکن» (Painkiller) یک مشکل فوری، ملموس و پرهزینه را حل می‌کند (مثلاً: "رفع خطای X در AWS"). در مقابل، «ویتامین» (Vitamin) یک بهبود عمومی و غیرفوری ایجاد می‌کند (مثلاً: "افزایش خلاقیت").</li>
-                            <li><strong>اقتصاد رفتاری و علوم اعصاب:</strong>
-                                <ul>
-                                    <li><strong>«سوگیری حال‌نگر» (Present Bias):</strong> افراد برای حل مشکل امروز (درد) ارزش نامتناسبی قائل‌اند تا یک سود در آینده (ویتامین).</li>
-                                    <li><strong>«گریز از زیان» (Loss Aversion):</strong> انگیزه برای جلوگیری از یک زیان (درد فعلی) از نظر روانشناختی قوی‌تر از انگیزه برای کسب یک سود (بهبود آینده) است.</li>
-                                    <li><strong>واکنش عصبی:</strong> حل یک "درد" فوری، سیستم پاداش مغز (ترشح دوپامین) را به شکل قوی‌تری فعال می‌کند.</li>
-                                </ul>
-                            </li>
-                            <li><strong>تأثیر بر فروش:</strong> دوره‌های "مسکن" نرخ تبدیل (Conversion Rate) به مراتب بالاتری دارند زیرا فوریت نیاز، چرخه تصمیم‌گیری مشتری را کوتاه می‌کند.</li>
-                            <li><strong>داده آماری:</strong> تحلیل‌های منتشر شده در Y Combinator Blog نشان می‌دهد که استارتاپ‌هایی که "مسکن" ارائه می‌دهند، در مقایسه با آنهایی که "ویتامین" می‌فروشند، مسیر بسیار سریع‌تری برای رسیدن به «تناسب محصول-بازار» (Product-Market Fit) دارند.</li>
-                        </ul>
-                        
-                        <h5>۳. مدت زمان دوره (ضریب وزنی: ۳۰٪)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> این شاخص به صورت سنتی به عنوان معیاری از «کمیت» (Quantity) درک می‌شود. با این حال، در آموزش مدرن، این شاخص با مدل ارزش هرمزی (Hormozi Value Equation) در تضاد است.</li>
-                            <li><strong>تحلیل:</strong> مدت زمان طولانی‌تر، مستقیماً متغیر «تأخیر زمانی» (Time Delay) را در فرمول هرمزی افزایش داده و ارزش پیشنهادی را کاهش می‌دهد. ارزش واقعی در «چگالی» (Density) محتوا نهفته است، نه «طول» آن.</li>
-                            <li><strong>اقتصاد رفتاری:</strong> در گذشته، مشتریان دچار «خطای هزینه غرق‌شده» (Sunk Cost Fallacy) می‌شدند (بیشتر = بهتر). امروزه، «هزینه فرصت» (Opportunity Cost) زمان، یک عامل کلیدی است.</li>
-                            <li><strong>تأثیر بر فروش:</strong> دوره‌های بسیار طولانی (مثلاً +۴۰ ساعت) ممکن است نرخ انصراف از خرید (Cart Abandonment) بالاتری داشته باشند، مگر اینکه به ماژول‌های کوچک تقسیم شوند. دوره‌های فشرده (Bootcamps) که نتیجه را در ۳ ماه (تأخیر کم) به جای ۴ سال (تأخیر زیاد) ارائه می‌دهند، قیمت‌های بسیار بالاتری (ده‌ها هزار دلار) دارند، که نشان‌دهنده ارزش "سرعت" است.</li>
-                        </ul>
-
-                        <h5>۴. منحصربه‌فرد بودن محتوا (ضریب وزنی: ۲۰٪)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> استراتژی «اقیانوس آبی» (Blue Ocean Strategy) (W. Chan Kim & Renée Mauborgne, INSEAD/HBR).</li>
-                            <li><strong>تحلیل:</strong> ایجاد محتوای منحصربه‌فرد (مثلاً اولین دوره در مورد یک فریمورک جدید منتشر شده در GitHub Blog یا یک متدولوژی پژوهشی نوین از MIT CSAIL) بازار جدیدی (اقیانوس آبی) خلق می‌کند که در آن رقابت نزدیک به صفر است.</li>
-                            <li><strong>علوم اعصاب:</strong> «اثر نوآوری» (Novelty Effect). مغز به محرک‌های جدید و غیرمنتظره پاداش می‌دهد. محتوای منحصربه‌فرد این بخش را فعال می‌کند و ارزش ادراک‌شده و توجه را بالا می‌برد.</li>
-                            <li><strong>تأثیر بر فروش:</strong> منجر به «قدرت قیمت‌گذاری انحصاری» (Monopolistic Pricing Power) می‌شود. در حالی که دوره‌های تکراری وارد «جنگ قیمت» (Price War) می‌شوند، دوره منحصربه‌فرد می‌تواند قیمت خود را دیکته کند و فروش بالایی را در یک بازار بکر تجربه کند.</li>
-                        </ul>
-                        
-                        <h5>۵. کیفیت تولید (ضریب وزنی: ۱۰٪)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> «اعتبار برند» (Brand Credibility) و «تجربه کاربری» (UX).</li>
-                            <li><strong>روانشناسی:</strong> «اثر هاله‌ای» (Halo Effect). کیفیت تولید بالا (یک ویژگی مثبت) به صورت ناخودآگاه به سایر ویژگی‌ها (مانند تخصص مدرس) تعمیم داده می‌شود. کیفیت پایین (صدای بد، تصویر تار) اثر هاله‌ای منفی داشته و تخصص مدرس را زیر سوال می‌برد.</li>
-                            <li><strong>تأثیر بر فروش:</strong> کیفیت پایین مستقیماً فروش را کاهش می‌دهد زیرا «اعتماد» (Trust) را در همان ثانیه‌های اول از بین می‌برد.</li>
-                            <li><strong>داده آماری:</strong> بر اساس گزارش‌های IEEE Spectrum در مورد رابط‌های کاربری، کاربران در عرض چند ثانیه اول (اغلب کمتر از ۵۰ میلی‌ثانیه) در مورد اعتبار یک پلتفرم قضاوت می‌کنند. کیفیت پایین ویدئو یا صدا می‌تواند نرخ خروج (Bounce Rate) از صفحه دوره را تا ۵۰٪ یا بیشتر افزایش دهد و فروش را متوقف کند.</li>
-                        </ul>
-
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش دوم: ارزش افزوده انسانی (ضریب منتورینگ M)</h4>
-                        <p>این ضریب، یک اهرم قیمت‌گذاری بسیار قدرتمند است که محصول را از «کالای اطلاعاتی» (Information Commodity) به «خدمت تحول‌آفرین» (Transformational Service) تبدیل می‌کند.</p>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> حل بحران «نرخ تکمیل» (Completion Rate) در آموزش آنلاین.</li>
-                            <li><strong>تحلیل آماری:</strong> مطالعات گسترده در مورد MOOCs (دوره‌های آنلاین انبوه باز)، از جمله گزارش‌های اولیه MIT و Harvard (مؤسسان edX)، نشان داد که نرخ تکمیل این دوره‌ها به طور میانگین بسیار پایین و در حدود ۵٪ تا ۱۰٪ است.</li>
-                            <li><strong>اقتصاد رفتاری:</strong> «تعهد و سازگاری» (Commitment & Consistency). وجود منتور (یک عامل انسانی) حس تعهد و پاسخگویی (Accountability) ایجاد می‌کند که در مدل سلف-پیس وجود ندارد.</li>
-                            <li><strong>تأثیر بر فروش:</strong> این شاخص بزرگترین اهرم برای افزایش قیمت (و در نتیجه درآمد کل، حتی با فروش کمتر) است.</li>
-                            <li><strong>داده آماری:</strong> گزارش‌های صنعتی (مانند EdTech Digest و تحلیل‌های Maven) نشان می‌دهد که دوره‌های مبتنی بر گروه (Cohort-Based Courses) با پشتیبانی منتور، می‌توانند ۵ تا ۱۰ برابر گران‌تر از دوره‌های سلف-پیس مشابه قیمت‌گذاری شوند. نرخ تکمیل در این دوره‌ها اغلب به ۸۰٪ تا ۹۰٪ می‌رسد (در مقایسه با ۵-۱۰٪ در MOOCs)، که این «نتیجه» (Outcome) را توجیه می‌کند.</li>
-                        </ul>
-
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش سوم: تطبیق با بازار (شاخص اقتصادی EI)</h4>
-                        <p>این شاخص، قیمت مبتنی بر ارزش را با واقعیت‌های اقتصادی بازار هدف تطبیق می‌دهد.</p>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> اصل اقتصادی «توانایی پرداخت» (Ability to Pay) و «تبعیض قیمت» (Price Discrimination).</li>
-                            <li><strong>اقتصاد رفتاری:</strong> «حسابداری ذهنی» (Mental Accounting). مشتریان قیمت را نسبت به درآمد خود می‌سنجند. قیمتی که برای یک مهندس در زوریخ (مرکز ETH Zurich) معقول است، برای یک دانشجو در بازاری دیگر، غیرقابل پرداخت است.</li>
-                            <li><strong>تأثیر بر فروش:</strong> عدم تطابق EI منجر به شکست کامل در فروش می‌شود. تطبیق صحیح آن (مانند مدل Netflix یا AWS که قیمت‌گذاری منطقه‌ای دارند) منجر به «نفوذ حداکثری در بازار» (Maximum Market Penetration) می‌شود.</li>
-                        </ul>
-
-                        <h4 class="mt-5 mb-3 border-bottom pb-2">بخش چهارم: تعدیل‌کننده‌های استراتژیک و روانشناسی</h4>
-                        <p>این ضرایب، مبتنی بر اصول «اقتصاد رفتاری» (Behavioral Economics) هستند و بر تصمیم‌گیری نهایی مشتری تأثیر می‌گذارند.</p>
-
-                        <h5>۱. برند شخصی مدرس (ضریب ۰٪ تا ۳۵٪+)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> «ارزش ویژه برند» (Brand Equity)، مفهومی که توسط نظریه‌پردازانی چون David Aaker توسعه یافته است.</li>
-                            <li><strong>علوم اعصاب:</strong> «نورون‌های آینه‌ای» (Mirror Neurons) و «اعتماد». مغز ما برای اعتماد به چهره‌های آشنا و معتبر (Authoritative) سیم‌کشی شده است. دیدن یک مدرس معتبر، مسیرهای عصبی مرتبط با اعتماد را فعال کرده و ریسک ادراک‌شده را کاهش می‌دهد.</li>
-                            <li><strong>تأثیر بر فروش:</strong> برند قوی نرخ تبدیل را به شدت افزایش می‌دهد.</li>
-                            <li><strong>داده آماری:</strong> مطالعات Nielsen نشان می‌دهد که ۸۱٪ مصرف‌کنندگان جهانی به توصیه‌های برندهای معتبر اعتماد دارند. در صنعت آموزش، این به معنای آن است که یک برند شناخته‌شده (مانند Stanford HAI یا MIT CSAIL) می‌تواند برای محتوای خود قیمت پرمیوم تعیین کند. تحلیل‌های HBR نشان می‌دهد که برندهای قوی می‌توانند یک «پرمیوم قیمتی» (Price Premium) تا ۲۰-۴۰٪ را نسبت به رقبای بدون برند حفظ کنند.</li>
-                        </ul>
-
-                        <h5>۲. سطح رقابت در بازار (ضریب ۱۵٪- تا ۲۰٪+)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> مدل «پنج نیروی رقابتی پورتر» (Porter's Five Forces) (Michael Porter, Harvard).</li>
-                            <li><strong>اقتصاد رفتاری:</strong> «نقطه مرجع» (Reference Point). در بازار شلوغ، قیمت رقبا تبدیل به نقطه مرجع مشتری می‌شود و قیمت‌گذاری بالاتر دشوار است (منجر به فروش کمتر). در بازار انحصاری، شما نقطه مرجع را تعیین می‌کنید.</li>
-                            <li><strong>تأثیر بر فروش:</strong> در بازار رقابتی، قیمت‌گذاری بالاتر از رقبا بدون ارائه ارزش متمایز (مانند منتورینگ یا برند قوی‌تر) منجر به کاهش شدید فروش خواهد شد.</li>
-                        </ul>
-                        
-                        <h5>۳. جلسه اول رایگان (ضریب پویا ۲٪+ تا ۱۲٪+)</h5>
-                        <ul>
-                            <li><strong>مبنای علمی:</strong> استراتژی «Freemium» یا «Trial» و «ریسک‌زدایی» (Risk Reversal).</li>
-                            <li><strong>اقتصاد رفتاری:</strong> «اصل تقابل» (Reciprocity). ارائه ارزش رایگان (جلسه اول)، حس دین و تمایل به جبران (خرید) را در مشتری ایجاد می‌کند.</li>
-                            <li><strong>تأثیر بر فروش:</strong> افزایش چشمگیر نرخ تبدیل.</li>
-                            <li><strong>داده آماری:</strong> بر اساس داده‌های Totango (پلتفرم مدیریت موفقیت مشتری)، شرکت‌هایی که نسخه آزمایشی (Trial) یا Freemium ارائه می‌دهند، می‌توانند نرخ تبدیل کاربر به مشتری پرداختی را تا ۱۵٪ افزایش دهند (در مقایسه با نرخ ۱-۲٪ در مدل‌های بدون آزمایشی). این مدل در پلتفرم‌هایی مانند Heroku یا Slack به خوبی اثبات شده است.</li>
-                        </ul>
-
-                        <h5>۴. سایر تعدیل‌کننده‌ها</h5>
-                        <ul>
-                            <li><strong>نمونه موفق (+۱۵٪):</strong>
-                                <ul>
-                                    <li><strong>مبنای علمی:</strong> اصل «اثبات اجتماعی» (Social Proof) (Robert Cialdini).</li>
-                                    <li><strong>علوم اعصاب:</strong> «رفتار گله‌ای» (Herd Behavior). مغز برای کاهش ریسک تصمیم‌گیری، تمایل دارد از اکثریت پیروی کند. دیدن موفقیت دیگران، مسیر عصبی تصمیم‌گیری را هموار می‌کند.</li>
-                                    <li><strong>داده آماری:</strong> طبق گزارش BrightLocal (مرکز داده‌های بازاریابی محلی)، ۷۹٪ از مصرف‌کنندگان به نظرات آنلاین به اندازه توصیه‌های شخصی اعتماد می‌کنند. افزودن مطالعات موردی (Case Studies) می‌تواند نرخ تبدیل را در صفحات فرود (Landing Pages) تا ۳۴٪ افزایش دهد.</li>
-                                </ul>
-                            </li>
-                            <li><strong>ضمانت بازگشت وجه (+۵٪):</strong>
-                                <ul>
-                                    <li><strong>مبنای علمی:</strong> تاکتیک کلاسیک «ریسک‌زدایی».</li>
-                                    <li><strong>اقتصاد رفتاری:</strong> حذف کامل «ترس از زیان» (Loss Aversion). این اطمینان را می‌دهد که تصمیم خرید، یک زیان قطعی نخواهد بود.</li>
-                                    <li><strong>تأثیر بر فروش:</strong> به طور قابل توجهی اصطکاک خرید را کاهش داده و فروش را افزایش می‌دهد. طبق داده‌های HBR، نرخ بازگشت وجه (Refund Rate) در محصولات دیجیتال با کیفیت، معمولاً پایین (زیر ۵-۱۰٪) باقی می‌ماند.</li>
-                                </ul>
-                            </li>
-                            <li><strong>گواهینامه معتبر (+۲۰٪):</strong>
-                                <ul>
-                                    <li><strong>مبنای علمی:</strong> افزودن یک «نتیجه ملموس» (Tangible Outcome).</li>
-                                    <li><strong>اقتصاد رفتاری:</strong> «اثر مالکیت» (Endowment Effect). گواهینامه یک دارایی دیجیتال ملموس است که دانشجو آن را "مالک" می‌شود و برای آن ارزش قائل است.</li>
-                                    <li><strong>داده آماری:</strong> گزارش Coursera Impact Report (2019) نشان داد که ۸۷٪ از فراگیرانی که برای گواهینامه تخصصی (Professional Certificate) ثبت‌نام کرده‌اند، مزایای شغلی ملموس (مانند ارتقاء، افزایش حقوق یا شغل جدید) را گزارش کرده‌اند. این امر مستقیماً تمایل به پرداخت (Willingness to Pay) را افزایش می‌دهد.</li>
-                                </ul>
-                            </li>
-                            <li><strong>فروش قسطی (-۱۰٪) و کمپین لانچ (-۳۰٪):</strong>
-                                <ul>
-                                    <li><strong>اقتصاد رفتاری (قسطی):</strong> «کاهش درد پرداخت» (Pain of Paying). پرداخت ۱۰۰ هزار تومان در ۱۰ قسط، "درد" کمتری نسبت به پرداخت یکجای ۱ میلیون تومان دارد (Thaler, 1999). این اصطکاک پرداخت را کاهش داده و فروش را برای مشتریان با بودجه محدود ممکن می‌سازد.</li>
-                                    <li><strong>اقتصاد رفتاری (کمپین):</strong> «اثر کمیابی» (Scarcity Effect) و «ترس از دست دادن» (FOMO). محدودیت زمانی (کمپین) مغز را وادار به تصمیم‌گیری سریع‌تر می‌کند و «اهمال‌کاری در خرید» (Purchase Procrastination) را کاهش می‌دهد.</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                        <hr class="my-5">
-                        
-                        <h3 class="fw-semibold text-dark mb-3">جمع‌بندی: ارتباط با شاخص ارزش هرمزی</h3>
-                        <p>مدل الکس هرمزی ($$\text{ارزش} = \frac{\text{نتیجه رویایی} \times \text{باور به موفقیت}}{\text{تأخیر زمانی} \times \text{تلاش و فداکاری}}$$) یک فرمول محاسباتی نیست، بلکه یک مدل ذهنی (Heuristic) قدرتمند برای ارزیابی جذابیت یک پیشنهاد است.</p>
-                        <p>این ماشین‌حساب، با رویکردی داده‌محور، ورودی‌های عینی را به این چهار متغیر ذهنی نگاشت می‌کند:</p>
-                        <ul>
-                            <li><strong>نتیجه رویایی:</strong> توسط «عمق دوره»، «نوع مسکن» و «گواهینامه معتبر» (داده ۸۷٪ Coursera) تقویت می‌شود.</li>
-                            <li><strong>باور به موفقیت:</strong> توسط «برند مدرس» (داده ۸۱٪ Nielsen)، «منتورینگ (M)» (افزایش نرخ تکمیل به ۹۰٪)، «ضمانت‌ها» و «اثبات اجتماعی» (افزایش تبدیل تا ۳۴٪) به شدت افزایش می‌یابد.</li>
-                            <li><strong>تأخیر زمانی:</strong> مستقیماً با «مدت زمان دوره» در ارتباط است (رابطه معکوس).</li>
-                            <li><strong>تلاش و فداکاری (ریسک):</strong> توسط «کیفیت تولید»، «جلسه اول رایگان» (افزایش تبدیل تا ۱۵٪) و «ضمانت بازگشت وجه» (کاهش ترس از زیان) به حداقل می‌رسد.</li>
-                        </ul>
-                        <p>بنابراین، این مدل قیمت‌گذاری، ترکیبی مستدل از اصول اقتصادی (کمیابی، توان پرداخت)، استراتژی‌های بازاریابی (اقیانوس آبی، برندینگ) و یافته‌های اقتصاد رفتاری (اثبات اجتماعی، ریسک‌زدایی) است که با داده‌های واقعی صنعت آموزش آنلاین (بحران نرخ تکمیل MOOCs) کالیبره شده و با شاخص‌های آماری معتبر پشتیبانی می‌شود.</p>
+            <div id="academic-pane" class="tab-pane">
+                 <article class="prose max-w-none prose-slate p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-lg border border-slate-200/50">
+                    
+                    <div class="content-block text-center mb-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/1_thlyl-aakadmyk-mashynhsab-qymtgthary-dwrh.png?raw=true" alt="تحلیل آکادمیک ماشین حساب قیمت گذاری دوره" class="mx-auto max-w-full h-auto">
                     </div>
-                </div>
+
+                     <h1>تحلیل آکادمیک و بازبینی مدل ماشین‌حساب قیمت‌گذاری دوره</h1>
+                     <p>این سند، مبانی علمی، آماری و مطالعاتی مورد استفاده در «ماشین‌حساب قیمت‌گذاری دوره» را تشریح می‌کند.</p>
+                    
+                    <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/2_paradaym-qymtgthary-shma-ashtbah-ast.png?raw=true" alt="پارادایم قیمت گذاری شما اشتباه است" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                            <h2>مقدمه: مبنای نظری مدل</h2>
+                            <p>مدل قیمت‌گذاری حاضر، یک رویکرد هیبریدی است که پارادایم <strong>"قیمت‌گذاری مبتنی بر ارزش" (Value-Based Pricing)</strong> استوار است.</p>
+                            <p> برخلاف مدل‌های سنتی که قیمت را تابعی از «هزینه تولید» می‌دانند، این مدل قیمت را تابعی از «ارزش ادراک‌شده» (Perceived Value) توسط مشتری تعریف می‌کند.</p>
+                        </div>
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/3_mdl-jdyd-qymtgthary-mbtny-br-arzsh-Value-Based-Pricing.png?raw=true" alt="پارادایم قیمت گذاری مبتنی بر ارزش در مقابل مدل های سنتی" class="mx-auto">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/4_asl-klydy-Harvard-Business-Review.png?raw=true" alt="اصل کلیدی از Harvard Business Review درباره قیمت گذاری نتیجه محور" class="mx-auto">
+                        </div>
+                         <div class="order-1 md:order-2">
+                            <p>همانطور که در تحلیل‌های <strong>Harvard Business Review (HBR)</strong> مکرراً تأکید شده، در اقتصاد مدرن، مشتریان هزینه‌ای را نه برای «زمان صرف‌شده» مدرس، بلکه برای <strong>«نتیجه حاصل‌شده» (Outcome)</strong> پرداخت می‌کنند.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                            <p>فرمول اصلی این ماشین‌حساب، این نظریه را در یک ساختار محاسباتی پیاده‌سازی می‌کند:</p>
+                            <div class="bg-slate-100 p-4 rounded text-center my-4 text-lg font-bold">$$\text{قیمت نهایی} = [ (\text{CV} \times \text{نرخ پایه}) \times M ] \times \text{EI} \times (1 + \sum \text{ ضرایب})$$</div>
+                        </div>
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/5_frmwl-hybrydy-mashynhsab-qymtgthary.png?raw=true" alt="فرمول هیبریدی ماشین حساب قیمت گذاری" class="mx-auto">
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/6_bkhsh-awl.png?raw=true" alt="بخش اول: کالبدشکافی هسته ارزش ذاتی یا Core Value" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                    <h3>بخش اول: هسته ارزش ذاتی (Core Value - CV)</h3>
+                    <p>این بخش، ارزش خام و بنیادین محتوای آموزشی را پیش از افزودن عوامل انسانی یا بازاری محاسبه می‌کند.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                            <h4>۱. عمق دوره (وزن: ۴۰٪)</h4>
+                            <ul>
+                                <li><strong>مبنای علمی:</strong> اصل اقتصادی «کمیابی» (Scarcity) و «تخصص‌گرایی» (Specialization).</li>
+                                <li><strong>تحلیل:</strong> محتوای پیشرفته به دانش تخصصی‌تری نیاز دارد که در بازار کمیاب‌تر است. بر اساس نظریه «سرمایه انسانی» (Human Capital Theory)، دانش پیشرفته‌تر پتانسیل درآمدزایی بالاتری برای دانشجو ایجاد می‌کند.</li>
+                            </ul>
+                        </div>
+                        <div class="order-1 md:order-2">
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/7_1-amq-dwrh-wzn-40.png?raw=true" alt="مفهوم عمق دوره و کمیابی دانش تخصصی" class="mx-auto">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/8_aqtsad-rftary-athr-lngr-qymty-Anchoring-Effect.png?raw=true" alt="اثر لنگر قیمتی در اقتصاد رفتاری" class="mx-auto">
+                        </div>
+                        <div>
+                             <ul>
+                                <li><strong>اقتصاد رفتاری:</strong> «اثر لنگر قیمتی» (Anchoring Effect). یک دوره با عنوان "پیشرفته" یا "تخصصی"، لنگر قیمتی بسیار بالاتری را در ذهن مخاطب ایجاد می‌کند و قیمت‌های پایین‌تر (مقدماتی) را در مقایسه، ناچیز جلوه می‌دهد.</li>
+                             </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                            <ul>
+                                <li><strong>داده آماری:</strong> پژوهش‌های منتشر شده در Nature یا IEEE Spectrum به طور مداوم «شکاف مهارتی» (Skills Gap) در حوزه‌های تخصصی (مانند AI، امنیت سایبری) را گزارش می‌دهند. دوره‌هایی که این شکاف‌های پرتقاضا را پر می‌کنند، بالاترین ارزش اقتصادی و قدرت قیمت‌گذاری را دارا هستند.</li>
+                            </ul>
+                        </div>
+                         <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/9_shkaf-mharty-Skills-Gap.png?raw=true" alt="مفهوم شکاف مهارتی یا Skills Gap" class="mx-auto">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/10_2-nwa-mhtwa-mskn-ya-wytamyn-dhryb-125x.png?raw=true" alt="تفاوت محتوای مسکن و ویتامین در قیمت گذاری" class="mx-auto">
+                         </div>
+                         <div>
+                            <h4>۲. نوع محتوا: «مسکن» یا «ویتامین»؟ (ضریب: ۱.۲۵x)</h4>
+                            <ul>
+                                <li><strong>مبنای علمی:</strong> این دسته‌بندی، یک مفهوم کلیدی در «مدیریت محصول» است که در مراکز نوآوری مانند Y Combinator به کار می‌رود.</li>
+                                <li><strong>تحلیل:</strong> «مسکن» (Painkiller) یک مشکل فوری، ملموس و پرهزینه را حل می‌کند. در مقابل، «ویتامین» (Vitamin) یک بهبود عمومی و غیرفوری ایجاد می‌کند.</li>
+                            </ul>
+                        </div>
+                     </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/11_chra-msknha-10-brabr-qwytr-myfrwshnd.png?raw=true" alt="چرا مسکن ها ۱۰ برابر قوی تر میفروشند" class="mx-auto">
+                        </div>
+                        <div class="order-1 md:order-2">
+                             <ul>
+                                <li><strong>اقتصاد رفتاری و علوم اعصاب:</strong><ul><li><strong>«سوگیری حال‌نگر» (Present Bias):</strong> افراد برای حل مشکل امروز (درد) ارزش نامتناسبی قائل‌اند تا یک سود در آینده (ویتامین).</li><li><strong>«گریز از زیان» (Loss Aversion):</strong> انگیزه برای جلوگیری از یک زیان (درد فعلی) از نظر روانشناختی قوی‌تر از انگیزه برای کسب یک سود (بهبود آینده) است.</li><li><strong>واکنش عصبی:</strong> حل یک "درد" فوری، سیستم پاداش مغز (ترشح دوپامین) را به شکل قوی‌تری فعال می‌کند.</li></ul></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/12_dadh-aamary-Y-Combinator-mskn-tnasb-sryatr.png?raw=true" alt="داده آماری وای کامبینیتر درباره مسکن" class="mx-auto">
+                        </div>
+                        <div>
+                             <ul>
+                               <li><strong>تأثیر بر فروش:</strong> دوره‌های "مسکن" نرخ تبدیل (Conversion Rate) به مراتب بالاتری دارند زیرا فوریت نیاز، چرخه تصمیم‌گیری مشتری را کوتاه می‌کند.</li><li><strong>داده آماری:</strong> تحلیل‌های منتشر شده در Y Combinator Blog نشان می‌دهد که استارتاپ‌هایی که "مسکن" ارائه می‌دهند، در مقایسه با آنهایی که "ویتامین" می‌فروشند، مسیر بسیار سریع‌تری برای رسیدن به «تناسب محصول-بازار» (Product-Market Fit) دارند.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                             <h4>۳. پارادوکس مدت زمان دوره (وزن: ۳۰٪)</h4>
+                            <ul><li><strong>مبنای علمی:</strong> این شاخص به صورت سنتی به عنوان معیاری از «کمیت» (Quantity) درک می‌شود. با این حال، در آموزش مدرن، این شاخص با مدل ارزش هرمزی (Hormozi Value Equation) در تضاد است.</li><li><strong>تحلیل:</strong> مدت زمان طولانی‌تر، مستقیماً متغیر «تأخیر زمانی» (Time Delay) را در فرمول هرمزی افزایش داده و ارزش پیشنهادی را کاهش می‌دهد. ارزش واقعی در «چگالی» (Density) محتوا نهفته است، نه «طول» آن.</li></ul>
+                        </div>
+                        <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/13_3-paradwks-mdt-zman-dwrh-wzn-30.png?raw=true" alt="پارادوکس مدت زمان دوره" class="mx-auto">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/14_aqtsad-rftary-hzynh-frst-Opportunity-Cost.png?raw=true" alt="اقتصاد رفتاری و هزینه فرصت" class="mx-auto">
+                        </div>
+                        <div>
+                            <ul><li><strong>اقتصاد رفتاری:</strong> در گذشته، مشتریان دچار «خطای هزینه غرق‌شده» (Sunk Cost Fallacy) می‌شدند (بیشتر = بهتر). امروزه، «هزینه فرصت» (Opportunity Cost) زمان، یک عامل کلیدی است.</li></ul>
+                        </div>
+                     </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                            <ul><li><strong>تأثیر بر فروش:</strong> دوره‌های بسیار طولانی (مثلاً +۴۰ ساعت) ممکن است نرخ انصراف از خرید (Cart Abandonment) بالاتری داشته باشند، مگر اینکه به ماژول‌های کوچک تقسیم شوند. دوره‌های فشرده (Bootcamps) که نتیجه را در ۳ ماه (تأخیر کم) به جای ۴ سال (تأخیر زیاد) ارائه می‌دهند، قیمت‌های بسیار بالاتری (ده‌ها هزار دلار) دارند، که نشان‌دهنده ارزش "سرعت" است.</li></ul>
+                         </div>
+                         <div class="order-1 md:order-2">
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/15_mthal-waqay-arzsh-srat.png?raw=true" alt="مثال واقعی از ارزش سرعت در قیمت گذاری" class="mx-auto">
+                         </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/16_4-mnhsrbhfrd-bwdn-mhtwa-wzn-20.png?raw=true" alt="منحصربفرد بودن محتوا و استراتژی اقیانوس آبی" class="mx-auto">
+                        </div>
+                        <div>
+                             <h4>۴. منحصربه‌فرد بودن محتوا (وزن: ۲۰٪)</h4>
+                            <ul><li><strong>مبنای علمی:</strong> استراتژی «اقیانوس آبی» (Blue Ocean Strategy) (W. Chan Kim & Renée Mauborgne, INSEAD/HBR).</li><li><strong>تحلیل:</strong> ایجاد محتوای منحصربه‌فرد (مثلاً اولین دوره در مورد یک فریمورک جدید منتشر شده در GitHub Blog یا یک متدولوژی پژوهشی نوین از MIT CSAIL) بازار جدیدی (اقیانوس آبی) خلق می‌کند که در آن رقابت نزدیک به صفر است.</li></ul>
+                        </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                            <ul><li><strong>علوم اعصاب:</strong> «اثر نوآوری» (Novelty Effect). مغز به محرک‌های جدید و غیرمنتظره پاداش می‌دهد. محتوای منحصربه‌فرد این بخش را فعال می‌کند و ارزش ادراک‌شده و توجه را بالا می‌برد.</li></ul>
+                         </div>
+                         <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/17_alwm-aasab-athr-nwaawry-Novelty-Effect.png?raw=true" alt="علوم اعصاب و اثر نوآوری" class="mx-auto">
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/18_ntyjh-anhsar-qdrt-qymtgthary-anhsary.png?raw=true" alt="نتیجه انحصار: قدرت قیمت گذاری انحصاری" class="mx-auto">
+                         </div>
+                         <div>
+                            <ul><li><strong>تأثیر بر فروش:</strong> منجر به «قدرت قیمت‌گذاری انحصاری» (Monopolistic Pricing Power) می‌شود. در حالی که دوره‌های تکراری وارد «جنگ قیمت» (Price War) می‌شوند، دوره منحصربه‌فرد می‌تواند قیمت خود را دیکته کند و فروش بالایی را در یک بازار بکر تجربه کند.</li></ul>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                            <h4>۵. کیفیت تولید (وزن: ۱۰٪)</h4>
+                            <ul><li><strong>مبنای علمی:</strong> «اعتبار برند» (Brand Credibility) و «تجربه کاربری» (UX).</li><li><strong>روانشناسی:</strong> «اثر هاله‌ای» (Halo Effect). کیفیت تولید بالا (یک ویژگی مثبت) به صورت ناخودآگاه به سایر ویژگی‌ها (مانند تخصص مدرس) تعمیم داده می‌شود. کیفیت پایین (صدای بد، تصویر تار) اثر هاله‌ای منفی داشته و تخصص مدرس را زیر سوال می‌برد.</li><li><strong>تأثیر بر فروش:</strong> کیفیت پایین مستقیماً فروش را کاهش می‌دهد زیرا «اعتماد» (Trust) را در همان ثانیه‌های اول از بین می‌برد.</li></ul>
+                         </div>
+                          <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/19_5-kyfyt-twlyd-wzn-10.png?raw=true" alt="کیفیت تولید و اثر هاله ای" class="mx-auto">
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/20_dadh-aamary-qdhawt-dr-50-mylythanyh.png?raw=true" alt="داده آماری: قضاوت در ۵۰ میلی ثانیه" class="mx-auto">
+                         </div>
+                         <div>
+                             <ul><li><strong>داده آماری:</strong> بر اساس گزارش‌های IEEE Spectrum در مورد رابط‌های کاربری، کاربران در عرض چند ثانیه اول (اغلب کمتر از ۵۰ میلی‌ثانیه) در مورد اعتبار یک پلتفرم قضاوت می‌کنند. کیفیت پایین ویدئو یا صدا می‌تواند نرخ خروج (Bounce Rate) از صفحه دوره را تا ۵۰٪ یا بیشتر افزایش دهد و فروش را متوقف کند.</li></ul>
+                        </div>
+                    </div>
+                    
+                    <hr>
+
+                     <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/21_bkhsh-dwm-ahrm-qymtgthary-dhryb-mntwryng-M.png?raw=true" alt="بخش دوم: اهرم قیمت گذاری - ضریب منتورینگ" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                    <h3>بخش دوم: ارزش افزوده انسانی (ضریب منتورینگ M)</h3>
+                    <p>این ضریب، یک اهرم قیمت‌گذاری بسیار قدرتمند است که محصول را از «کالای اطلاعاتی» (Information Commodity) به «خدمت تحول‌آفرین» (Transformational Service) تبدیل می‌کند.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                             <ul><li><strong>مبنای علمی:</strong> حل بحران «نرخ تکمیل» (Completion Rate) در آموزش آنلاین.</li><li><strong>تحلیل آماری:</strong> مطالعات گسترده در مورد MOOCs (دوره‌های آنلاین انبوه باز)، از جمله گزارش‌های اولیه MIT و Harvard (مؤسسان edX)، نشان داد که نرخ تکمیل این دوره‌ها به طور میانگین بسیار پایین و در حدود ۵٪ تا ۱۰٪ است.</li></ul>
+                        </div>
+                        <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/22_bhran-aamwzsh-aanlayn-nrkh-tkmyl-payyn.png?raw=true" alt="بحران آموزش آنلاین: نرخ تکمیل پایین" class="mx-auto">
+                        </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/23_rahhl-rftary-paskhgwyy-Accountability.png?raw=true" alt="راه حل رفتاری: پاسخگویی" class="mx-auto">
+                        </div>
+                        <div>
+                            <ul><li><strong>اقتصاد رفتاری:</strong> «تعهد و سازگاری» (Commitment & Consistency). وجود منتور (یک عامل انسانی) حس تعهد و پاسخگویی (Accountability) ایجاد می‌کند که در مدل سلف-پیس وجود ندارد.</li></ul>
+                        </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                            <ul><li><strong>تأثیر بر فروش:</strong> این شاخص بزرگترین اهرم برای افزایش قیمت (و در نتیجه درآمد کل، حتی با فروش کمتر) است.</li><li><strong>داده آماری:</strong> گزارش‌های صنعتی (مانند EdTech Digest و تحلیل‌های Maven) نشان می‌دهد که دوره‌های مبتنی بر گروه (Cohort-Based Courses) با پشتیبانی منتور، می‌توانند ۵ تا ۱۰ برابر گران‌تر از دوره‌های سلف-پیس مشابه قیمت‌گذاری شوند. نرخ تکمیل در این دوره‌ها اغلب به ۸۰٪ تا ۹۰٪ می‌رسد (در مقایسه با ۵-۱۰٪ در MOOCs)، که این «نتیجه» (Outcome) را توجیه می‌کند.</li></ul>
+                         </div>
+                         <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/24_dadh-aamary-qdrt-dwrhhay-grwhy-CBCs.png?raw=true" alt="داده آماری: قدرت دوره های گروهی" class="mx-auto">
+                         </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/25_bkhsh-swm.png?raw=true" alt="بخش سوم: تطبیق با بازار - شاخص اقتصادی" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                    <h3>بخش سوم: تطبیق با بازار (شاخص اقتصادی EI)</h3>
+                    <p>این شاخص، قیمت مبتنی بر ارزش را با واقعیت‌های اقتصادی بازار هدف تطبیق می‌دهد.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/26_aqtsad-rftary-hsabdary-thhny-Mental-Accounting.png?raw=true" alt="اقتصاد رفتاری: حسابداری ذهنی" class="mx-auto">
+                        </div>
+                        <div>
+                             <ul><li><strong>مبنای علمی:</strong> اصل اقتصادی «توانایی پرداخت» (Ability to Pay) و «تبعیض قیمت» (Price Discrimination).</li><li><strong>اقتصاد رفتاری:</strong> «حسابداری ذهنی» (Mental Accounting). مشتریان قیمت را نسبت به درآمد خود می‌سنجند. قیمتی که برای یک مهندس در زوریخ (مرکز ETH Zurich) معقول است، برای یک دانشجو در بازاری دیگر، غیرقابل پرداخت است.</li><li><strong>تأثیر بر فروش:</strong> عدم تطابق EI منجر به شکست کامل در فروش می‌شود. تطبیق صحیح آن (مانند مدل Netflix یا AWS که قیمت‌گذاری منطقه‌ای دارند) منجر به «نفوذ حداکثری در بازار» (Maximum Market Penetration) می‌شود.</li></ul>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/27_bkhsh-chharm.png?raw=true" alt="بخش چهارم: تعدیل کننده های استراتژیک و روانشناسی" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                    <h3>بخش چهارم: تعدیل‌کننده‌های استراتژیک و روانشناسی</h3>
+                    <p>این ضرایب، مبتنی بر اصول «اقتصاد رفتاری» (Behavioral Economics) هستند و بر تصمیم‌گیری نهایی مشتری تأثیر می‌گذارند.</p>
+
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                             <h4>۱. برند شخصی مدرس (ضریب ۰٪ تا ۳۵٪+)</h4>
+                            <ul><li><strong>مبنای علمی:</strong> «ارزش ویژه برند» (Brand Equity)، مفهومی که توسط نظریه‌پردازانی چون David Aaker توسعه یافته است.</li><li><strong>علوم اعصاب:</strong> «نورون‌های آینه‌ای» (Mirror Neurons) و «اعتماد». مغز ما برای اعتماد به چهره‌های آشنا و معتبر (Authoritative) سیم‌کشی شده است. دیدن یک مدرس معتبر، مسیرهای عصبی مرتبط با اعتماد را فعال کرده و ریسک ادراک‌شده را کاهش می‌دهد.</li></ul>
+                         </div>
+                         <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/28_tadylknndh-1-brnd-shkhsy-ta-35.png?raw=true" alt="تعدیل کننده ۱: برند شخصی مدرس" class="mx-auto">
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/29_dadh-aamary-qdrt-brnd.png?raw=true" alt="داده آماری: قدرت برند" class="mx-auto">
+                         </div>
+                         <div>
+                             <ul><li><strong>تأثیر بر فروش:</strong> برند قوی نرخ تبدیل را به شدت افزایش می‌دهد.</li><li><strong>داده آماری:</strong> مطالعات Nielsen نشان می‌دهد که ۸۱٪ مصرف‌کنندگان جهانی به توصیه‌های برندهای معتبر اعتماد دارند. در صنعت آموزش، این به معنای آن است که یک برند شناخته‌شده (مانند Stanford HAI یا MIT CSAIL) می‌تواند برای محتوای خود قیمت پرمیوم تعیین کند. تحلیل‌های HBR نشان می‌دهد که برندهای قوی می‌توانند یک «پرمیوم قیمتی» (Price Premium) تا ۲۰-۴۰٪ را نسبت به رقبای بدون برند حفظ کنند.</li></ul>
+                         </div>
+                    </div>
+
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                          <div class="order-2 md:order-1">
+                             <h4>۲. سطح رقابت در بازار (ضریب ۱۵٪- تا ۲۰٪+)</h4>
+                            <ul><li><strong>مبنای علمی:</strong> مدل «پنج نیروی رقابتی پورتر» (Porter's Five Forces) (Michael Porter, Harvard).</li><li><strong>اقتصاد رفتاری:</strong> «نقطه مرجع» (Reference Point). در بازار شلوغ، قیمت رقبا تبدیل به نقطه مرجع مشتری می‌شود و قیمت‌گذاری بالاتر دشوار است (منجر به فروش کمتر). در بازار انحصاری، شما نقطه مرجع را تعیین می‌کنید.</li><li><strong>تأثیر بر فروش:</strong> در بازار رقابتی، قیمت‌گذاری بالاتر از رقبا بدون ارائه ارزش متمایز (مانند منتورینگ یا برند قوی‌تر) منجر به کاهش شدید فروش خواهد شد.</li></ul>
+                          </div>
+                          <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/30_tadylknndh-2-sth-rqabt-dr-bazar-15-ta-20.png?raw=true" alt="تعدیل کننده ۲: سطح رقابت در بازار" class="mx-auto">
+                          </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/31_tadylknndh-3-jlsh-awl-raygan-ta-12.png?raw=true" alt="تعدیل کننده ۳: جلسه اول رایگان" class="mx-auto">
+                         </div>
+                         <div>
+                            <h4>۳. جلسه اول رایگان (ضریب پویا ۲٪+ تا ۱۲٪+)</h4>
+                           <ul><li><strong>مبنای علمی:</strong> استراتژی «Freemium» یا «Trial» و «ریسک‌زدایی» (Risk Reversal).</li><li><strong>تأثیر بر فروش:</strong> افزایش چشمگیر نرخ تبدیل.</li><li><strong>داده آماری:</strong> بر اساس داده‌های Totango (پلتفرم مدیریت موفقیت مشتری)، شرکت‌هایی که نسخه آزمایشی (Trial) یا Freemium ارائه می‌دهند، می‌توانند نرخ تبدیل کاربر به مشتری پرداختی را تا ۱۵٪ افزایش دهند (در مقایسه با نرخ ۱-۲٪ در مدل‌های بدون آزمایشی). این مدل در پلتفرم‌هایی مانند Heroku یا Slack به خوبی اثبات شده است.</li></ul>
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                          <div class="order-2 md:order-1">
+                             <ul><li><strong>اقتصاد رفتاری:</strong> «اصل تقابل» (Reciprocity). ارائه ارزش رایگان (جلسه اول)، حس دین و تمایل به جبران (خرید) را در مشتری ایجاد می‌کند.</li></ul>
+                          </div>
+                          <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/32_rwanshnasy-raygan-tqabl-w-tbdyl.png?raw=true" alt="روانشناسی رایگان: تقابل و تبدیل" class="mx-auto">
+                          </div>
+                    </div>
+
+                    <h4>۴. سایر تعدیل‌کننده‌ها</h4>
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                           <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/33_tadylknndh-4-athbat-ajtmaay-15.png?raw=true" alt="تعدیل کننده ۴: اثبات اجتماعی" class="mx-auto">
+                        </div>
+                         <div>
+                             <ul><li><strong>نمونه موفق (+۱۵٪):</strong><ul><li><strong>مبنای علمی:</strong> اصل «اثبات اجتماعی» (Social Proof) (Robert Cialdini).</li><li><strong>علوم اعصاب:</strong> «رفتار گله‌ای» (Herd Behavior). مغز برای کاهش ریسک تصمیم‌گیری، تمایل دارد از اکثریت پیروی کند. دیدن موفقیت دیگران، مسیر عصبی تصمیم‌گیری را هموار می‌کند.</li></ul></li></ul>
+                         </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div class="order-2 md:order-1">
+                             <ul><li><strong>داده آماری:</strong> طبق گزارش BrightLocal (مرکز داده‌های بازاریابی محلی)، ۷۹٪ از مصرف‌کنندگان به نظرات آنلاین به اندازه توصیه‌های شخصی اعتماد می‌کنند. افزودن مطالعات موردی (Case Studies) می‌تواند نرخ تبدیل را در صفحات فرود (Landing Pages) تا ۳۴٪ افزایش دهد.</li></ul>
+                        </div>
+                         <div class="order-1 md:order-2">
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/34_dadh-aamary-qdrt-athbat-ajtmaay.png?raw=true" alt="داده آماری: قدرت اثبات اجتماعی" class="mx-auto">
+                         </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                           <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/35_tadylknndh-5-dhmant-bazgsht-wjh-5.png?raw=true" alt="تعدیل کننده ۵: ضمانت بازگشت وجه" class="mx-auto">
+                        </div>
+                        <div>
+                             <ul><li><strong>ضمانت بازگشت وجه (+۵٪):</strong><ul><li><strong>مبنای علمی:</strong> تاکتیک کلاسیک «ریسک‌زدایی».</li><li><strong>اقتصاد رفتاری:</strong> حذف کامل «ترس از زیان» (Loss Aversion). این اطمینان را می‌دهد که تصمیم خرید، یک زیان قطعی نخواهد بود.</li><li><strong>تأثیر بر فروش:</strong> به طور قابل توجهی اصطکاک خرید را کاهش داده و فروش را افزایش می‌دهد. طبق داده‌های HBR، نرخ بازگشت وجه (Refund Rate) در محصولات دیجیتال با کیفیت، معمولاً پایین (زیر ۵-۱۰٪) باقی می‌ماند.</li></ul></li></ul>
+                        </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                            <ul><li><strong>گواهینامه معتبر (+۲۰٪):</strong><ul><li><strong>مبنای علمی:</strong> افزودن یک «نتیجه ملموس» (Tangible Outcome).</li><li><strong>اقتصاد رفتاری:</strong> «اثر مالکیت» (Endowment Effect). گواهینامه یک دارایی دیجیتال ملموس است که دانشجو آن را "مالک" می‌شود و برای آن ارزش قائل است.</li><li><strong>داده آماری:</strong> گزارش Coursera Impact Report (2019) نشان داد که ۸۷٪ از فراگیرانی که برای گواهینامه تخصصی (Professional Certificate) ثبت‌نام کرده‌اند، مزایای شغلی ملموس (مانند ارتقاء، افزایش حقوق یا شغل جدید) را گزارش کرده‌اند. این امر مستقیماً تمایل به پرداخت (Willingness to Pay) را افزایش می‌دهد.</li></ul></li></ul>
+                         </div>
+                          <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/36_tadylknndh-6-gwahynamh-matbr-20.png?raw=true" alt="تعدیل کننده ۶: گواهینامه معتبر" class="mx-auto">
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/37_tadylknndh-7-frwsh-qsty-kahsh-astkak.png?raw=true" alt="تعدیل کننده ۷: فروش قسطی" class="mx-auto">
+                         </div>
+                         <div>
+                            <ul><li><strong>فروش قسطی (-۱۰٪)</strong><ul><li><strong>اقتصاد رفتاری (قسطی):</strong> «کاهش درد پرداخت» (Pain of Paying). پرداخت ۱۰۰ هزار تومان در ۱۰ قسط، "درد" کمتری نسبت به پرداخت یکجای ۱ میلیون تومان دارد (Thaler, 1999). این اصطکاک پرداخت را کاهش داده و فروش را برای مشتریان با بودجه محدود ممکن می‌سازد.</li></ul></li></ul>
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                          <div class="order-2 md:order-1">
+                            <ul><li><strong>کمپین لانچ (-۳۰٪):</strong><ul><li><strong>اقتصاد رفتاری (کمپین):</strong> «اثر کمیابی» (Scarcity Effect) و «ترس از دست دادن» (FOMO). محدودیت زمانی (کمپین) مغز را وادار به تصمیم‌گیری سریع‌تر می‌کند و «اهمال‌کاری در خرید» (Purchase Procrastination) را کاهش می‌دهد.</li></ul></li></ul>
+                          </div>
+                          <div class="order-1 md:order-2">
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/38_tadylknndh-8-kmpyn-lanch-FOMO.png?raw=true" alt="تعدیل کننده ۸: کمپین لانچ و فومو" class="mx-auto">
+                          </div>
+                    </div>
+
+                    <hr>
+                    
+                     <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/39_jmabndy.png?raw=true" alt="جمع بندی و ارتباط با شاخص ارزش هرمزی" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                    <h2>جمع‌بندی: ارتباط با شاخص ارزش هرمزی</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                        <div>
+                            <p>مدل الکس هرمزی ($$\text{ارزش} = \frac{\text{نتیجه رویایی} \times \text{باور به موفقیت}}{\text{تأخیر زمانی} \times \text{تلاش و فداکاری}}$$) یک فرمول محاسباتی نیست، بلکه یک مدل ذهنی (Heuristic) قدرتمند برای ارزیابی جذابیت یک پیشنهاد است.</p>
+                            <p>این ماشین‌حساب، با رویکردی داده‌محور، ورودی‌های عینی را به این چهار متغیر ذهنی نگاشت می‌کند:</p>
+                        </div>
+                         <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/40_mdl-thhny-hrmzy-Hormozi-Value-Equation.png?raw=true" alt="مدل ذهنی هرمزی" class="mx-auto">
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                             <ul><li><strong>نتیجه رویایی:</strong> توسط «عمق دوره»، «نوع مسکن» و «گواهینامه معتبر» (داده ۸۷٪ Coursera) تقویت می‌شود.</li></ul>
+                         </div>
+                          <div class="order-1 md:order-2">
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/41_chgwnh-ntyjh-rwyayy-ra-sakhtym.png?raw=true" alt="چگونه نتیجه رویایی را ساختیم" class="mx-auto">
+                         </div>
+                    </div>
+                    
+                     <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/42_sh-rkn-asly.png?raw=true" alt="شش رکن اصلی نتیجه رویایی" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                            <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/43_chgwnh-bawr-bh-mwfqyt-ra-sakhtym.png?raw=true" alt="چگونه باور به موفقیت را ساختیم" class="mx-auto">
+                         </div>
+                         <div>
+                              <ul><li><strong>باور به موفقیت:</strong> توسط «برند مدرس» (داده ۸۱٪ Nielsen)، «منتورینگ (M)» (افزایش نرخ تکمیل به ۹۰٪)، «ضمانت‌ها» و «اثبات اجتماعی» (افزایش تبدیل تا ۳۴٪) به شدت افزایش می‌یابد.</li></ul>
+                         </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div class="order-2 md:order-1">
+                            <ul><li><strong>تأخیر زمانی:</strong> مستقیماً با «مدت زمان دوره» در ارتباط است (رابطه معکوس).</li></ul>
+                         </div>
+                          <div class="order-1 md:order-2">
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/44_chgwnh-takhyr-zmany-ra-kahsh-dadym.png?raw=true" alt="چگونه تاخیر زمانی را کاهش دادیم" class="mx-auto">
+                         </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center my-12 content-block">
+                         <div>
+                             <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/45_chgwnh-tlash-w-fdakary-rysk-ra-kahsh-dadym.png?raw=true" alt="چگونه تلاش و فداکاری و ریسک را کاهش دادیم" class="mx-auto">
+                         </div>
+                         <div>
+                            <ul><li><strong>تلاش و فداکاری (ریسک):</strong> توسط «کیفیت تولید»، «جلسه اول رایگان» (افزایش تبدیل تا ۱۵٪) و «ضمانت بازگشت وجه» (کاهش ترس از زیان) به حداقل می‌رسد.</li></ul>
+                         </div>
+                    </div>
+
+                    <p>بنابراین، این مدل قیمت‌گذاری، ترکیبی مستدل از اصول اقتصادی (کمیابی، توان پرداخت)، استراتژی‌های بازاریابی (اقیانوس آبی، برندینگ) و یافته‌های اقتصاد رفتاری (اثبات اجتماعی، ریسک‌زدایی) است که با داده‌های واقعی صنعت آموزش آنلاین (بحران نرخ تکمیل MOOCs) کالیبره شده و با شاخص‌های آماری معتبر پشتیبانی می‌شود.</p>
+                    
+                    <div class="content-block text-center my-12">
+                        <img src="https://github.com/Mehrdad-Dadkhah/vbe-course-calculator/blob/main/%D9%82%DB%8C%D9%85%D8%AA%20%DA%AF%D8%B0%D8%A7%D8%B1%DB%8C%20%D8%AF%D9%88%D8%B1%D9%87/46_jmabndy-nhayy.png?raw=true" alt="جمع بندی نهایی تحلیل آکادمیک" class="mx-auto max-w-full h-auto">
+                    </div>
+
+                 </article>
             </div>
+
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <!-- KaTeX JS and auto-render script -->
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzYCcmU1ZgnrAARxQy4ppKeAXvoUxiGgo1Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
-
     <script>
-        const inputs = {
-            duration: document.getElementById('duration'),
-            depth: document.getElementById('depth'),
-            contentType: document.getElementById('contentType'),
-            valueCoefficient: document.getElementById('valueCoefficient'),
-            uniqueness: document.getElementById('uniqueness'),
-            productionQuality: document.getElementById('productionQuality'),
-            mentoring: document.getElementById('mentoring'),
-            targetAudiences: document.querySelectorAll('.target-audience'),
-            inflation: document.getElementById('inflation'),
-            competition: document.getElementById('competition'),
-            personalBrand: document.getElementById('personalBrand'),
-            adjustmentFactors: document.querySelectorAll('.adjustment-factor'),
-            productionQualityValue: document.getElementById('productionQualityValue')
-        };
-
-        const outputs = {
-            cvScore: document.getElementById('cvScore'),
-            mentoringMultiplier: document.getElementById('mentoringMultiplier'),
-            economicIndex: document.getElementById('economicIndex'),
-            finalPrice: document.getElementById('finalPrice'),
-            goldenRule: document.getElementById('goldenRule'),
-            freeSessionBonus: document.getElementById('freeSessionBonus'),
-            // Hormozi outputs
-            hormoziDream: document.getElementById('hormoziDream'),
-            hormoziLikelihood: document.getElementById('hormoziLikelihood'),
-            hormoziTime: document.getElementById('hormoziTime'),
-            hormoziEffort: document.getElementById('hormoziEffort'),
-            hormoziFinalScore: document.getElementById('hormoziFinalScore'),
-        };
-        
-        const data = {
-            weights: {
-                duration: 0.3,
-                depth: 0.4,
-                uniqueness: 0.2,
-                productionQuality: 0.1
-            },
-            defaultValueCoefficients: {
-                '5': 1500,  // مقدماتی
-                '7': 2500,  // متوسط
-                '10': 4000 // پیشرفته
-            },
-            baseIncome: 20000000
-        };
-
-        function formatCurrency(value) {
-            if (isNaN(value)) return '0 تومان';
-            return new Intl.NumberFormat('fa-IR').format(Math.round(value)) + ' تومان';
-        }
-
-        function updateDefaultValueCoefficient() {
-            const depthScore = inputs.depth.value;
-            const defaultRate = data.defaultValueCoefficients[depthScore];
-            if (defaultRate) {
-                inputs.valueCoefficient.value = defaultRate;
-            }
-        }
-
-        function calculateHormoziValue() {
-            // Get relevant inputs
-            const depth = inputs.depth.value; // 5, 7, 10
-            const contentType = inputs.contentType.value; // 1, 1.25
-            const duration = parseFloat(inputs.duration.value) || 1;
-            const personalBrand = parseFloat(inputs.personalBrand.value); // 0, 0.15, 0.35
-            const testimonials = document.getElementById('testimonials').checked;
-            const mentoring = inputs.mentoring.value; // 1, 1.5, 2.2, 2.5, 3.5
-            const freeSession = document.getElementById('freeSession').checked;
-            const certificate = document.getElementById('certificate').checked;
-            const moneyBack = document.getElementById('moneyBack').checked;
-
-            // --- Hormozi Calculation Logic ---
-
-            // Guarantee Flags
-            const hasJobGuarantee = (mentoring == '3.5');
-            const hasSuccessGuarantee = (mentoring == '2.2');
-            const hasAnyMajorGuarantee = hasJobGuarantee || hasSuccessGuarantee || moneyBack;
-
-            // 1. Dream Outcome (Scale: 0-100)
-            let dreamOutcome = 0;
-            if (depth == '5') dreamOutcome = (contentType == '1.25') ? 60 : 40;
-            if (depth == '7') dreamOutcome = (contentType == '1.25') ? 85 : 70;
-            if (depth == '10') dreamOutcome = (contentType == '1.25') ? 95 : 90; // Cap at 95 without guarantee
-
-            // Check if any guarantee is present to push to 100
-            if (dreamOutcome >= 90 && hasAnyMajorGuarantee) {
-                dreamOutcome = 100;
-            }
-            if(hasJobGuarantee) dreamOutcome = 100; // Job guarantee is always 100
-
-            // 2. Likelihood of Achievement (Scale: 0-100)
-            let likelihood = 30; // Base likelihood
-            if (personalBrand == 0.15) likelihood += 15;
-            if (personalBrand == 0.35) likelihood += 30;
-            if (testimonials) likelihood += 15;
-            if (mentoring == '1.5') likelihood += 10; // Group
-            if (hasSuccessGuarantee) likelihood += 20;
-            if (mentoring == '2.5') likelihood += 25; // Personal
-            if (hasJobGuarantee) likelihood += 30;
-            if (freeSession) likelihood += 10;
-            if (certificate) likelihood += 10;
-            if (moneyBack) likelihood += 5;
-            likelihood = Math.min(100, likelihood); // Cap at 100
-
-            // 3. Time Delay (Scale: 1+) - Lower is better
-            const timeDelay = (duration / 10) + 1;
-
-            // 4. Effort & Sacrifice (Scale: 1+) - Lower is better
-            let effort = 0;
-            // Base effort from course difficulty
-            if (depth == '5') effort += 3;
-            if (depth == '7') effort += 6;
-            if (depth == '10') effort += 9;
-            
-            // Effort modification from mentoring
-            if (mentoring == '1') effort += 3;   // No mentor adds effort
-            if (mentoring == '1.5') effort += 1;  // Group
-            if (hasSuccessGuarantee) effort += 0;
-            if (mentoring == '2.5') effort -= 1; // Personal reduces effort
-            if (hasJobGuarantee) effort -= 2;
-
-            // Risk Reduction (further reduces perceived effort)
-            let riskReducer = 0;
-            if (personalBrand == 0.15) riskReducer += 1;
-            if (personalBrand == 0.35) riskReducer += 2;
-            if (testimonials) riskReducer += 1.5;
-            if (hasJobGuarantee) riskReducer += 2;
-            if (hasSuccessGuarantee) riskReducer += 1;
-            if (moneyBack) riskReducer += 0.5;
-            
-            effort -= riskReducer;
-            
-            // Add risk for unknown brand
-            if (personalBrand == 0) {
-                effort += 1.5; // Unknown brand INCREASES perceived effort/risk
-            }
-
-            effort = Math.max(1, effort); // Ensure effort is at least 1
-
-            // Final Calculation
-            const hormoziScore = (timeDelay * effort > 0) ? (dreamOutcome * likelihood) / (timeDelay * effort) : 0;
-
-            // Update UI
-            outputs.hormoziDream.textContent = `${dreamOutcome} / 100`;
-            outputs.hormoziLikelihood.textContent = `${likelihood} / 100`;
-            outputs.hormoziTime.textContent = timeDelay.toFixed(1);
-            outputs.hormoziEffort.textContent = effort.toFixed(1);
-            outputs.hormoziFinalScore.textContent = hormoziScore.toFixed(0);
-        }
-        
-        function calculateDynamicFreeSessionBonus(depthScore, productionQualityScore) {
-            // Map depth to a base percentage (from 1% to 5%)
-            const depthBaseBonus = { '5': 0.01, '7': 0.03, '10': 0.05 };
-            // Map quality to an additional percentage (from 1% to 7%)
-            const qualityBonus = (productionQualityScore / 10) * 0.07;
-            // Total bonus will be between 2% and 12%
-            return (depthBaseBonus[depthScore] || 0.03) + qualityBonus;
-        }
-
-        function calculatePrice() {
-            // --- STEP 1: Get all input values ---
-            const duration = parseFloat(inputs.duration.value) || 0;
-            const depthScore = parseFloat(inputs.depth.value) || 0;
-            const contentTypeMultiplier = parseFloat(inputs.contentType.value) || 1;
-            const valueCoefficient = parseFloat(inputs.valueCoefficient.value) || 0; 
-            const uniquenessScore = parseFloat(inputs.uniqueness.value) || 0;
-            const productionQualityScore = parseFloat(inputs.productionQuality.value) || 0;
-            const mentoringMultiplier = parseFloat(inputs.mentoring.value) || 1; 
-            const inflationRate = parseFloat(inputs.inflation.value) || 0;
-            const competitionFactor = parseFloat(inputs.competition.value) || 0;
-            const personalBrandFactor = parseFloat(inputs.personalBrand.value) || 0;
-            
-            let totalIncome = 0;
-            let selectedCount = 0;
-            inputs.targetAudiences.forEach(checkbox => {
-                if (checkbox.checked) {
-                    totalIncome += parseFloat(checkbox.value);
-                    selectedCount++;
-                }
-            });
-            const averageTargetIncome = selectedCount > 0 ? totalIncome / selectedCount : 0;
-
-            // --- STEP 2: Calculate Content Value (CV) ---
-            const cvRaw = (duration * data.weights.duration) +
-                        (depthScore * data.weights.depth) +
-                        (uniquenessScore * data.weights.uniqueness) +
-                        (productionQualityScore * data.weights.productionQuality);
-            
-            const cvScore = (cvRaw * 100) * contentTypeMultiplier;
-            
-            // --- STEP 3: Calculate Economic Index (EI) ---
-            const economicIndex = averageTargetIncome > 0 ? (averageTargetIncome / data.baseIncome) * (1 + inflationRate / 100) : 0;
-
-            // --- STEP 4: Calculate Final Price using the main formula ---
-            const basePrice = cvScore * valueCoefficient;
-            const priceAfterMentoring = basePrice * mentoringMultiplier;
-            let finalPrice = priceAfterMentoring * economicIndex;
-            
-            // Calculate dynamic bonus for free session and update its label
-            const freeSessionBonusValue = calculateDynamicFreeSessionBonus(String(depthScore), productionQualityScore);
-            outputs.freeSessionBonus.textContent = `(+${(freeSessionBonusValue * 100).toFixed(1)}%)`;
-
-            let totalAdjustment = competitionFactor + personalBrandFactor; 
-            inputs.adjustmentFactors.forEach(checkbox => {
-                if (checkbox.checked) {
-                    if (checkbox.id === 'freeSession') {
-                        totalAdjustment += freeSessionBonusValue;
-                    } else {
-                        totalAdjustment += parseFloat(checkbox.value);
-                    }
-                }
-            });
-            finalPrice = finalPrice * (1 + totalAdjustment);
-
-            // --- STEP 5: Update the UI with the results ---
-            outputs.cvScore.textContent = Math.round(cvScore);
-            outputs.mentoringMultiplier.textContent = `x ${mentoringMultiplier}`;
-            outputs.economicIndex.textContent = economicIndex.toFixed(2);
-            outputs.finalPrice.textContent = formatCurrency(finalPrice);
-            inputs.productionQualityValue.textContent = productionQualityScore;
-
-            // Golden Rule Check
-            const pricePercentageOfIncome = averageTargetIncome > 0 ? (finalPrice / averageTargetIncome) * 100 : 0;
-            if (averageTargetIncome > 0) {
-                outputs.goldenRule.innerHTML = `این قیمت معادل <strong class="fw-bold">${pricePercentageOfIncome.toFixed(1)}%</strong> درآمد ماهانه جامعه هدف است.`;
-                if (pricePercentageOfIncome <= 3) {
-                     outputs.goldenRule.classList.remove('text-warning');
-                     outputs.goldenRule.classList.add('text-success');
-                } else {
-                     outputs.goldenRule.classList.remove('text-success');
-                     outputs.goldenRule.classList.add('text-warning');
-                }
-            } else {
-                outputs.goldenRule.textContent = "برای محاسبه قانون طلایی، یک جامعه هدف انتخاب کنید.";
-                outputs.goldenRule.className = "text-secondary";
-            }
-
-            // Calculate Hormozi Value
-            calculateHormoziValue();
-        }
-        
-        // --- Event Listeners to trigger recalculation ---
-        Object.values(inputs).forEach(elementOrNodeList => {
-            const elements = NodeList.prototype.isPrototypeOf(elementOrNodeList) ? Array.from(elementOrNodeList) : [elementOrNodeList];
-            elements.forEach(element => {
-                element.addEventListener('input', calculatePrice);
-            });
-        });
-        
-        inputs.depth.addEventListener('input', () => {
-            updateDefaultValueCoefficient();
-            calculatePrice();
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(document.body);
+            }
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.dataset.tab;
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    tabPanes.forEach(pane => {
+                        pane.classList.toggle('active', pane.id === `${tab}-pane`);
+                    });
+                });
+            });
+
+            const inputs = {
+                duration: document.getElementById('duration'),
+                depth: document.getElementById('depth'),
+                contentType: document.getElementById('contentType'),
+                valueCoefficient: document.getElementById('valueCoefficient'),
+                uniqueness: document.getElementById('uniqueness'),
+                productionQuality: document.getElementById('productionQuality'),
+                mentoring: document.getElementById('mentoring'),
+                targetAudiences: document.querySelectorAll('.target-audience'),
+                inflation: document.getElementById('inflation'),
+                competition: document.getElementById('competition'),
+                personalBrand: document.getElementById('personalBrand'),
+                adjustmentFactors: document.querySelectorAll('.adjustment-factor'),
+                productionQualityValue: document.getElementById('productionQualityValue')
+            };
+
+            const outputs = {
+                cvScore: document.getElementById('cvScore'),
+                mentoringMultiplier: document.getElementById('mentoringMultiplier'),
+                economicIndex: document.getElementById('economicIndex'),
+                finalPrice: document.getElementById('finalPrice'),
+                goldenRule: document.getElementById('goldenRule'),
+                freeSessionBonus: document.getElementById('freeSessionBonus'),
+                hormoziDream: document.getElementById('hormoziDream'),
+                hormoziLikelihood: document.getElementById('hormoziLikelihood'),
+                hormoziTime: document.getElementById('hormoziTime'),
+                hormoziEffort: document.getElementById('hormoziEffort'),
+                hormoziFinalScore: document.getElementById('hormoziFinalScore'),
+            };
+            
+            const data = {
+                weights: { duration: 0.3, depth: 0.4, uniqueness: 0.2, productionQuality: 0.1 },
+                defaultValueCoefficients: { '5': 1500, '7': 2500, '10': 4000 },
+                baseIncome: 20000000
+            };
+
+            function formatCurrency(value) {
+                if (isNaN(value)) return '0 تومان';
+                const parts = new Intl.NumberFormat('fa-IR').formatToParts(Math.round(value));
+                const number = parts.filter(p => p.type === 'integer' || p.type === 'group').map(p => p.value).join('');
+                const currency = parts.find(p => p.type === 'currency')?.value || 'تومان';
+                return `<span class="font-vazir-black text-5xl">${number}</span> <span class="text-2xl font-semibold">${currency}</span>`;
+            }
+
+            function updateDefaultValueCoefficient() {
+                const depthScore = inputs.depth.value;
+                inputs.valueCoefficient.value = data.defaultValueCoefficients[depthScore] || 2500;
+            }
+
+            function calculateHormoziValue() {
+                const depth = inputs.depth.value;
+                const contentType = inputs.contentType.value;
+                const duration = parseFloat(inputs.duration.value) || 1;
+                const personalBrand = parseFloat(inputs.personalBrand.value);
+                const testimonials = document.getElementById('testimonials').checked;
+                const mentoring = inputs.mentoring.value;
+                const freeSession = document.getElementById('freeSession').checked;
+                const certificate = document.getElementById('certificate').checked;
+                const moneyBack = document.getElementById('moneyBack').checked;
+
+                const hasJobGuarantee = (mentoring == '3.5');
+                const hasSuccessGuarantee = (mentoring == '2.2');
+                const hasAnyMajorGuarantee = hasJobGuarantee || hasSuccessGuarantee || moneyBack;
+
+                let dreamOutcome = 0;
+                if (depth == '5') dreamOutcome = (contentType == '1.25') ? 60 : 40;
+                if (depth == '7') dreamOutcome = (contentType == '1.25') ? 85 : 70;
+                if (depth == '10') dreamOutcome = (contentType == '1.25') ? 95 : 90;
+                if (dreamOutcome >= 90 && hasAnyMajorGuarantee) dreamOutcome = 100;
+                if(hasJobGuarantee) dreamOutcome = 100;
+
+                let likelihood = 30;
+                if (personalBrand == 0.15) likelihood += 15;
+                if (personalBrand == 0.35) likelihood += 30;
+                if (testimonials) likelihood += 15;
+                if (mentoring == '1.5') likelihood += 10;
+                if (hasSuccessGuarantee) likelihood += 20;
+                if (mentoring == '2.5') likelihood += 25;
+                if (hasJobGuarantee) likelihood += 30;
+                if (freeSession) likelihood += 10;
+                if (certificate) likelihood += 10;
+                if (moneyBack) likelihood += 5;
+                likelihood = Math.min(100, likelihood);
+
+                const timeDelay = (duration / 10) + 1;
+                
+                let effort = 0;
+                if (depth == '5') effort += 3;
+                if (depth == '7') effort += 6;
+                if (depth == '10') effort += 9;
+                if (mentoring == '1') effort += 3;
+                if (mentoring == '1.5') effort += 1;
+                if (mentoring == '2.5') effort -= 1;
+                if (hasJobGuarantee) effort -= 2;
+
+                let riskReducer = 0;
+                if (personalBrand == 0.15) riskReducer += 1;
+                if (personalBrand == 0.35) riskReducer += 2;
+                if (testimonials) riskReducer += 1.5;
+                if (hasJobGuarantee) riskReducer += 2;
+                if (hasSuccessGuarantee) riskReducer += 1;
+                if (moneyBack) riskReducer += 0.5;
+                effort -= riskReducer;
+                if (personalBrand == 0) effort += 1.5;
+                effort = Math.max(1, effort);
+
+                const hormoziScore = (timeDelay * effort > 0) ? (dreamOutcome * likelihood) / (timeDelay * effort) : 0;
+
+                outputs.hormoziDream.textContent = `${dreamOutcome} / 100`;
+                outputs.hormoziLikelihood.textContent = `${likelihood} / 100`;
+                outputs.hormoziTime.textContent = timeDelay.toFixed(1);
+                outputs.hormoziEffort.textContent = effort.toFixed(1);
+                outputs.hormoziFinalScore.textContent = hormoziScore.toFixed(0);
+            }
+            
+            function calculateDynamicFreeSessionBonus(depthScore, productionQualityScore) {
+                const depthBaseBonus = { '5': 0.01, '7': 0.03, '10': 0.05 };
+                const qualityBonus = (productionQualityScore / 10) * 0.07;
+                return (depthBaseBonus[depthScore] || 0.03) + qualityBonus;
+            }
+
+            function calculatePrice() {
+                // --- STEP 1: Get all input values ---
+                const duration = parseFloat(inputs.duration.value) || 0;
+                const depthScore = parseFloat(inputs.depth.value) || 0;
+                const contentTypeMultiplier = parseFloat(inputs.contentType.value) || 1;
+                const valueCoefficient = parseFloat(inputs.valueCoefficient.value) || 0; 
+                const uniquenessScore = parseFloat(inputs.uniqueness.value) || 0;
+                const productionQualityScore = parseFloat(inputs.productionQuality.value) || 0;
+                const mentoringMultiplier = parseFloat(inputs.mentoring.value) || 1; 
+                const inflationRate = parseFloat(inputs.inflation.value) || 0;
+                const competitionFactor = parseFloat(inputs.competition.value) || 0;
+                const personalBrandFactor = parseFloat(inputs.personalBrand.value) || 0;
+                
+                let totalIncome = 0;
+                let selectedCount = 0;
+                inputs.targetAudiences.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        totalIncome += parseFloat(checkbox.value);
+                        selectedCount++;
+                    }
+                });
+                const averageTargetIncome = selectedCount > 0 ? totalIncome / selectedCount : 0;
+
+                // --- STEP 2: Calculate Content Value (CV) ---
+                const cvRaw = (duration * data.weights.duration) +
+                            (depthScore * data.weights.depth) +
+                            (uniquenessScore * data.weights.uniqueness) +
+                            (productionQualityScore * data.weights.productionQuality);
+                
+                const cvScore = (cvRaw * 100) * contentTypeMultiplier;
+                
+                // --- STEP 3: Calculate Economic Index (EI) ---
+                const economicIndex = averageTargetIncome > 0 ? (averageTargetIncome / data.baseIncome) * (1 + inflationRate / 100) : 1 * (1 + inflationRate / 100) ; // Default EI to 1 if no audience selected but include inflation
+
+                // --- STEP 4: Calculate Final Price using the main formula ---
+                const basePrice = cvScore * valueCoefficient;
+                const priceAfterMentoring = basePrice * mentoringMultiplier;
+                
+                // Calculate dynamic bonus for free session and update its label
+                const freeSessionBonusValue = calculateDynamicFreeSessionBonus(String(depthScore), productionQualityScore);
+                const freeSessionBonusEl = document.getElementById('freeSessionBonus');
+                if (freeSessionBonusEl) {
+                  freeSessionBonusEl.textContent = `(+${(freeSessionBonusValue * 100).toFixed(1)}%)`;
+                }
+
+                let totalAdjustment = competitionFactor + personalBrandFactor; 
+                inputs.adjustmentFactors.forEach(checkbox => {
+                    if (checkbox.checked) {
+                         // Add the value unless it's the free session, which has a dynamic value
+                        if (checkbox.id !== 'freeSession') {
+                           totalAdjustment += parseFloat(checkbox.value);
+                        } else {
+                            totalAdjustment += freeSessionBonusValue; // Add dynamic bonus
+                        }
+                    }
+                });
+                
+                // Apply EI and adjustments correctly
+                // Final Price = (Base Price * Mentoring) * EI * (1 + Total Adjustments)
+                let finalPrice = priceAfterMentoring * economicIndex * (1 + totalAdjustment);
+
+
+                // --- STEP 5: Update the UI with the results ---
+                outputs.cvScore.textContent = Math.round(cvScore);
+                outputs.mentoringMultiplier.textContent = `x ${mentoringMultiplier}`;
+                outputs.economicIndex.textContent = economicIndex.toFixed(2);
+                outputs.finalPrice.innerHTML = formatCurrency(finalPrice);
+                inputs.productionQualityValue.textContent = productionQualityScore;
+
+                // Golden Rule Check
+                const pricePercentageOfIncome = averageTargetIncome > 0 ? (finalPrice / averageTargetIncome) * 100 : 0;
+                if (averageTargetIncome > 0) {
+                    outputs.goldenRule.innerHTML = `این قیمت معادل <strong class="font-bold">${pricePercentageOfIncome.toFixed(1)}%</strong> درآمد ماهانه جامعه هدف است.`;
+                    if (pricePercentageOfIncome <= 3) {
+                         outputs.goldenRule.classList.remove('text-amber-600');
+                         outputs.goldenRule.classList.add('text-green-600');
+                    } else {
+                         outputs.goldenRule.classList.remove('text-green-600');
+                         outputs.goldenRule.classList.add('text-amber-600');
+                    }
+                } else {
+                    outputs.goldenRule.textContent = "برای محاسبه قانون طلایی، یک جامعه هدف انتخاب کنید.";
+                    outputs.goldenRule.className = "text-slate-500 text-sm";
+                }
+
+                calculateHormoziValue();
+            }
+            
+            // --- Event Listeners to trigger recalculation ---
+            // Only add the 'input' event listener to the depth select for coefficient update.
+            inputs.depth.addEventListener('input', updateDefaultValueCoefficient);
+
+            // Add 'input' event listener to all inputs and selects for price calculation.
+            const allInputs = document.querySelectorAll('input, select');
+            allInputs.forEach(input => {
+                input.addEventListener('input', calculatePrice);
+            });
+            
+            // Initial calculation on page load
             updateDefaultValueCoefficient();
             calculatePrice();
         });
-
     </script>
 </body>
 </html>
